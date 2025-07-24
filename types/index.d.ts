@@ -79,5 +79,4 @@ interface CompanionComponentProps {
   userName: string;
   userImage: string;
   voice: string;
-  style: string;
 }

@@ -28,7 +28,7 @@ export const recentSessions = [
     name: "Neura the Brainy Explorer",
     topic: "Neural Network of the Brain",
     duration: 45,
-    color: "#E5D0FF",
+    
   },
   {
     id: "2",
@@ -36,7 +36,7 @@ export const recentSessions = [
     name: "Countsy the Number Wizard",
     topic: "Derivatives & Integrals",
     duration: 30,
-    color: "#FFDA6E",
+    
   },
   {
     id: "3",
@@ -44,7 +44,7 @@ export const recentSessions = [
     name: "Verba the Vocabulary Builder",
     topic: "English Literature",
     duration: 30,
-    color: "#BDE7FF",
+    
   },
   {
     id: "4",
@@ -52,7 +52,7 @@ export const recentSessions = [
     name: "Codey the Logic Hacker",
     topic: "Intro to If-Else Statements",
     duration: 45,
-    color: "#FFC8E4",
+    
   },
   {
     id: "5",
@@ -60,7 +60,7 @@ export const recentSessions = [
     name: "Memo, the Memory Keeper",
     topic: "World Wars: Causes & Consequences",
     duration: 15,
-    color: "#FFECC8",
+    
   },
   {
     id: "6",
@@ -68,6 +68,6 @@ export const recentSessions = [
     name: "The Market Maestro",
     topic: "The Basics of Supply & Demand",
     duration: 10,
-    color: "#C8FFDF",
+    
   },
 ];

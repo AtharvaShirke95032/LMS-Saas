@@ -77,5 +77,4 @@ interface CompanionComponentProps {
   topic: string;
   name: string;
   userName: string;
-  userImage: string;
 }

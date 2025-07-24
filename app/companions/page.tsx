@@ -1,9 +1,10 @@
+import CompanionForm from '@/components/CompanionForm'
 import React from 'react'
 
 const CompanionsLibrary = () => {
   return (
     <div>
-      companionlibrary
+      companion
     </div>
   )
 }

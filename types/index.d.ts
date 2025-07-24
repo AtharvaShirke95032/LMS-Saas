@@ -81,3 +81,5 @@ interface CompanionComponentProps {
   voice: string;
   style: string;
 }
+
+type

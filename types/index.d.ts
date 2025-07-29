@@ -82,4 +82,3 @@ interface CompanionComponentProps {
   style: string;
 }
 
-type

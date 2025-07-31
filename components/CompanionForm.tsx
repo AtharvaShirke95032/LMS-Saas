@@ -23,7 +23,7 @@ import {
 import { subjects } from "@/constants"
 import { Textarea } from "@/components/ui/textarea"
 import { createCompanion } from "@/lib/actions/companion.actions"
-import { redirect } from "next/navigation"
+import { redirect,RedirectType } from "next/navigation"
 import { SubmitHandler } from "react-hook-form"
 
 const formSchema = z.object({
@@ -55,7 +55,8 @@ const CompanionForm = () => {
       const companion = await createCompanion(values)
       if (companion) {
         console.log("created companion")
-        redirect(`/companions/${companion.id}`)
+        console.log(companion)
+        redirect(`/companions/${companion.id}`,RedirectType.push)
       } else {
         console.error('Failed to create companion')
         redirect('/')

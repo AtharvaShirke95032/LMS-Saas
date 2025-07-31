@@ -4,11 +4,15 @@ import CTA from '@/components/CTA'
 import { Button } from '@/components/ui/button'
 import { recentSessions } from '@/constants'
 import { getAllCompanions, getRecentSessions } from '@/lib/actions/companion.actions'
+import { currentUser } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
 const Page = async () => {
   const companions = await getAllCompanions({limit:3});
-  const recentSessionCompanions = await getRecentSessions(10);
+  const userId = await currentUser()
+  if(!userId) redirect("/sign-in")
+  const recentSessionCompanions = await getRecentSessions(userId.id,10);
   return (
     <main>
       <h1  className='text-2xl'>Popular companions</h1>

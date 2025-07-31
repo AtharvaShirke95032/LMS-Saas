@@ -1,85 +1,124 @@
-"use server"
+"use server";
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 import { Filter } from "lucide-react";
 
-export const createCompanion = async(FormData: CreateCompanion)=>{
-    const {userId:author} = await auth();
-    const supabase = createSupabaseClient();
+export const createCompanion = async (FormData: CreateCompanion) => {
+  const { userId: author } = await auth();
+  const supabase = createSupabaseClient();
 
-    const {data,error} = await supabase
+  const { data, error } = await supabase
     .from("companions")
-    .insert({...FormData, author})
+    .insert({ ...FormData, author })
     .select();
 
-    if(error||!data) throw new Error(error?.message || "failed to create a companion");
-    return data[0];
-}
+  if (error || !data)
+    throw new Error(error?.message || "failed to create a companion");
+  return data[0];
+};
 
-export const getAllCompanions = async ({limit = 10, page = 1, subject, topic}:GetAllCompanions) =>{
-     const supabase = createSupabaseClient();
-     
-     let query = supabase.from('companions').select();
-     if(subject && topic){
-       query = query.ilike("subject",`%${subject}%`)
-        .or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`)
-     }else if(subject){
-        query =  query.ilike("subject",`%${subject}%`)
-     } else if(topic){
-        query = query.or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`)
-     }
+export const getAllCompanions = async ({
+  limit = 10,
+  page = 1,
+  subject,
+  topic,
+}: GetAllCompanions) => {
+  const supabase = createSupabaseClient();
 
-     query = query.range((page - 1)*limit,page*limit-1)
-     const {data:companions,error} = await query;
-     if(error) throw new Error(error.message);
+  let query = supabase.from("companions").select();
+  if (subject && topic) {
+    query = query
+      .ilike("subject", `%${subject}%`)
+      .or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`);
+  } else if (subject) {
+    query = query.ilike("subject", `%${subject}%`);
+  } else if (topic) {
+    query = query.or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`);
+  }
 
-     return companions;
+  query = query.range((page - 1) * limit, page * limit - 1);
+  const { data: companions, error } = await query;
+  if (error) throw new Error(error.message);
 
+  return companions;
+};
 
-}
+export const getCompanion = async (id: string) => {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from("companions")
+    .select()
+    .eq("id", id);
 
-export const getCompanion = async (id:string)=>{
-   const supabase = createSupabaseClient();
-   const {data,error} = await supabase
-   .from("companions")
-   .select()
-   .eq("id",id)
-
-   if(error) return console.log(error);
-   return data[0];
-}
+  if (error) return console.log(error);
+  return data[0];
+};
 
 export const addToSessionHistory = async (companionId: string) => {
-    const { userId } = await auth();
-    const supabase = createSupabaseClient();
-    const { data, error } = await supabase.from('session_history')
-        .insert({
-            companion_id: companionId,
-            user_id: userId,
-        })
+  const { userId } = await auth();
+  const supabase = createSupabaseClient();
+  const { data: exist, error: error1 } = await supabase
+    .from("session_history")
+    .select("companion_id")
+    .eq("companion_id", companionId)
+    .eq("user_id", userId);
+  if (error1) throw new Error(error1.message);
 
-    if(error) throw new Error(error.message);
-
+  const existId = exist.map((ex) => ex.companion_id); // Make sure ex.id exists!
+  let flag = false;
+//   console.log("companionid",companionId);
+//   console.log("Existid",existId[0])
+  for (let i = 0; i < existId.length; i++) {
+    if (existId[i] === companionId) {
+      flag = true; // ✅ actually update flag
+      break;
+    }
+  }
+//   console.log(flag);
+  if (flag) {
+    console.log("already exists in db");
+  }
+  else{
+    const { data, error } = await supabase.from("session_history").insert({
+      companion_id: companionId,
+      user_id: userId,
+    });
+    if (error) throw new Error(error.message);
     return data;
-}
-export const getRecentSessions = async(limit = 10) => { 
+    }
+};
+export const getRecentSessions = async (userId: string, limit = 10) => {
   const supabase = createSupabaseClient();
-  const {data,error} = await supabase.from("session_history").select(`companions:companion_id(*)`).order('created_at',{ascending:false}).limit(limit)
-  if(error) throw new Error(error.message);
-  return data.map(({companions})=>companions)
-}
+  const { data, error } = await supabase
+    .from("session_history")
+    .select(`companions:companion_id(*)`)
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  // console.log("data:",data);
+  if (error) throw new Error(error.message);
+  return data.map(({ companions }) => companions);
+};
 
-export const getUserSessions = async(userId:string,limit =10) => { 
+export const getUserSessions = async (userId: string, limit = 10) => {
   const supabase = createSupabaseClient();
-  const {data,error} = await supabase.from("session_history").select(`companions:companion_id(*)`).eq('user_id',userId).order('created_at',{ascending:false}).limit(limit)
-  if(error) throw new Error(error.message);
-  return data.map(({companions})=>companions)
-}
+  const { data, error } = await supabase
+    .from("session_history")
+    .select(`companions:companion_id(*)`)
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(error.message);
+  return data.map(({ companions }) => companions);
+};
 
-export const getUserCompanions = async(userId:string) => { 
+export const getUserCompanions = async (userId: string) => {
   const supabase = createSupabaseClient();
-  const {data,error} = await supabase.from("companions").select().eq('author',userId)
-  if(error) throw new Error(error.message);
+  const { data, error } = await supabase
+    .from("companions")
+    .select()
+    .eq("author", userId);
+  if (error) throw new Error(error.message);
   return data;
-}
+};

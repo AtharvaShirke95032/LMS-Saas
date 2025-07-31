@@ -22,6 +22,11 @@ const CompanionsList = ({
   companions,
   classNames,
 }: companionsListProps) => {
+  const filtered = companions?.filter(
+    (item,index,self)=>
+      index === self.findIndex((t)=>t.id===item.id)
+  )
+  // console.log("filetered:",filtered);
   return (
     <article className={cn("companion-list", classNames)}>
       <h2 className="font-bold text-3xl">{title}</h2>
@@ -34,13 +39,18 @@ const CompanionsList = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {companions?.map(({ id, subject, name, topic, duration }) => (
-            <TableRow key={id}>
+          {filtered?.map(({ id, subject, name, topic, duration,created_at}) => (
+            
+            <TableRow key={created_at}>
+             
               <TableCell>
+                
                 <Link href={`/companions/${id}`}>
+                
                   <div className="flex items-center gap-2">
+                    
                     <div className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden">
-                      <Image
+                      <Image 
                       src={`/icons/${subject}.svg`}
                       alt={subject}
                       width={35}
@@ -68,7 +78,6 @@ const CompanionsList = ({
                   width={18}
                   height={18}
                   />
-
                 </div>
               </TableCell>
               <TableCell>

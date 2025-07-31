@@ -9,7 +9,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import soundwaves from "@/constants/soundwaves.json";
-import { ca } from "zod/locales";
+
 
 
 enum CallStatus {

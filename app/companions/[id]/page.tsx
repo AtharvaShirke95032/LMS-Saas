@@ -38,7 +38,7 @@ const ComapionSession = async ({params}:companionSessionPageProps) => {
             <p className='text-lg'> {topic}</p>
           </div>
         </div>
-        <div className='items-start text-2xl max-md:hidden'>{duration}</div>
+        <div className='items-start text-2xl max-md:hidden'>{duration} minutes</div>
       </article>
       <CompanionComponent
         {...companion}

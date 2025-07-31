@@ -18,12 +18,7 @@ export const createCompanion = async (FormData: CreateCompanion) => {
   return data[0];
 };
 
-export const getAllCompanions = async ({
-  limit = 10,
-  page = 1,
-  subject,
-  topic,
-}: GetAllCompanions) => {
+export const getAllCompanions = async ({limit = 10,page = 1,subject,topic}: GetAllCompanions) => {
   const supabase = createSupabaseClient();
 
   let query = supabase.from("companions").select();
@@ -40,7 +35,7 @@ export const getAllCompanions = async ({
   query = query.range((page - 1) * limit, page * limit - 1);
   const { data: companions, error } = await query;
   if (error) throw new Error(error.message);
-
+  console.log("companions:",companions)
   return companions;
 };
 
@@ -67,26 +62,25 @@ export const addToSessionHistory = async (companionId: string) => {
 
   const existId = exist.map((ex) => ex.companion_id); // Make sure ex.id exists!
   let flag = false;
-//   console.log("companionid",companionId);
-//   console.log("Existid",existId[0])
+  //   console.log("companionid",companionId);
+  //   console.log("Existid",existId[0])
   for (let i = 0; i < existId.length; i++) {
     if (existId[i] === companionId) {
       flag = true; // ✅ actually update flag
       break;
     }
   }
-//   console.log(flag);
+  //   console.log(flag);
   if (flag) {
     console.log("already exists in db");
-  }
-  else{
+  } else {
     const { data, error } = await supabase.from("session_history").insert({
       companion_id: companionId,
       user_id: userId,
     });
     if (error) throw new Error(error.message);
     return data;
-    }
+  }
 };
 export const getRecentSessions = async (userId: string, limit = 10) => {
   const supabase = createSupabaseClient();
@@ -115,10 +109,40 @@ export const getUserSessions = async (userId: string, limit = 10) => {
 
 export const getUserCompanions = async (userId: string) => {
   const supabase = createSupabaseClient();
+  
   const { data, error } = await supabase
     .from("companions")
     .select()
     .eq("author", userId);
   if (error) throw new Error(error.message);
   return data;
+};
+
+export const filterComponents = async ({
+  limit = 10,
+  page = 1,
+  subject,
+  topic,
+  userId,
+}: filterComponents) => {
+  const supabase = createSupabaseClient();
+
+  let query = supabase.from("companions").select().eq("author", userId);
+
+  if (subject && topic) {
+    query = query
+      .ilike("subject", `%${subject}%`)
+      .or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`);
+  } else if (subject) {
+    query = query.ilike("subject", `%${subject}%`);
+  } else if (topic) {
+    query = query.or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`);
+  }
+
+  query = query.range((page - 1) * limit, page * limit - 1);
+
+  const { data: companions, error } = await query;
+  if (error) throw new Error(error.message);
+
+  return companions;
 };

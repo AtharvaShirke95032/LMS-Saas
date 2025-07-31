@@ -17,6 +17,14 @@ enum Subject {
   business = "business",
 }
 
+interface filterComponents {
+  userId?:string;
+  limit?: number;
+  page?: number;
+  subject?: string | string[];
+  topic?: string | string[];
+}
+
 type Companion = Models.DocumentList<Models.Document> & {
   $id: string;
   name: string;
@@ -36,6 +44,8 @@ interface CreateCompanion {
 }
 
 interface GetAllCompanions {
+
+  
   limit?: number;
   page?: number;
   subject?: string | string[];

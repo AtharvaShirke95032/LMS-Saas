@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 
 const Page = async () => {
+  
   const companions = await getAllCompanions({limit:3});
   const userId = await currentUser()
   if(!userId) redirect("/sign-in")

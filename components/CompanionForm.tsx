@@ -38,6 +38,7 @@ const formSchema = z.object({
     duration: z.number().min(1, { message: 'Duration is required.'}),
 })
 
+
 const CompanionForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -47,7 +48,7 @@ const CompanionForm = () => {
             topic: '',
             voice: '',
             style: '',
-            duration: 15,
+            duration: 2,
         },
     })
 
@@ -205,7 +206,7 @@ const CompanionForm = () => {
                             <FormControl>
                                 <Input
                                     type="number"
-                                    placeholder="15"
+                                    placeholder="2"
                                     {...field}
                                     className="input"
                                 />

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque } from "next/font/google";
+import { Montserrat } from "next/font/google";
+import { dark } from '@clerk/themes'
+
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const montserrat = Montserrat({
   subsets: ["latin"],
+  variable: "--font-montserrat",
 });
 
 export const metadata: Metadata = {
@@ -20,11 +22,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider   appearance={{
+        baseTheme: dark,
+      }}>
       <html lang="en">
-        <body className={`${bricolage.variable} antialiased`}>
+        <body
+          className={`${montserrat.variable} bg-[#121212] antialiased`}
+          style={{
+            backgroundImage:
+              "radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }}
+        >
           <Navbar />
-          {children} 
+          {children}
         </body>
       </html>
     </ClerkProvider>

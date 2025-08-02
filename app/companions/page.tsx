@@ -17,9 +17,9 @@ const CompanionsLibrary = async ({searchParams}:SearchParams) => {
   const companions = await filterComponents({subject,topic,userId:userId.id})
   
   return (
-    <main>
+    <main className='bg-transparent'>
       <section className='flex justify-between gap-4 max-sm:flex-col'>
-        <h1>Companion Library</h1>
+        <h1 className='text-white'> 🧠 Companion Library </h1>
         <div className='flex gap-4'>
           <SearchInput/>
           <SubjectFilter/>

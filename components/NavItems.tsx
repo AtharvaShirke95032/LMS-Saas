@@ -8,7 +8,8 @@ import React from "react";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Companions", href: "/companions" },
-  { label: "My journey", href: "/my-journey" },
+  { label: "Pricing", href: "/subscription" },
+  { label: "My Learnings", href: "/my-journey" },
 ];
 
 const NavItems = () => {
@@ -20,7 +21,7 @@ const NavItems = () => {
         <Link
           href={href}
           key={label}
-          className={cn(pathname === href && "text-primary font-semibold")}
+          className={cn(pathname === href && "text-[#93cf2f] font-semibold" )}
         >
           {label}
         </Link>

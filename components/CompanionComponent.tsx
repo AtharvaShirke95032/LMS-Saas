@@ -149,7 +149,7 @@ const CompanionComponent = ({
               />
             </div>
           </div>
-          <p className="font-bold text-2xl">{name}</p>
+          <p className="font-bold text-2xl text-white">{name}</p>
         </div>
         <div className="user-section">
           <div className="user-avatar">
@@ -160,7 +160,7 @@ const CompanionComponent = ({
               height={130}
               className="rounded-lg"
             />
-            <p className="font-bold">{userName}</p>
+            <p className="font-bold text-white">{userName}</p>
           </div>
           <button className="btn-mic" onClick={toggleMicrophone} disabled={callStatus !== CallStatus.ACTIVE}>
             <Image
@@ -169,7 +169,7 @@ const CompanionComponent = ({
               width={36}
               height={36}
             />
-            <p className="max-sm:hidden">
+            <p className="max-sm:hidden text-white">
               {isMuted ? "Turn on microphone" : "Turn off microphone"}
             </p>
           </button>
@@ -193,10 +193,10 @@ const CompanionComponent = ({
             {messages.map((message,index)=>{
                 if(message.role === "assistant") {
                     return(
-                        <p key={index} className="max-sm:text-sm">{name.split(' ')[0].replace('/[.,]/g,','')}:{message.content}</p>
+                        <p key={index} className="max-sm:text-sm text-white">{name.split(' ')[0].replace('/[.,]/g,','')}:{message.content}</p>
                     )
                 }else{
-                   return <p key={index} className="text-primary max-sm:text-sm">{userName}:{message.content}</p>
+                   return <p key={index} className="text-white max-sm:text-sm ">{userName}:{message.content}</p>
                 }
             })
             }

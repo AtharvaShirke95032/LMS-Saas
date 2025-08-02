@@ -18,7 +18,7 @@ const Page = async () => {
   const user = await currentUser();
 
   return (
-    <main>
+    <main className="bg-transparent">
       <SignedOut>
         
         <LandingPage/>
@@ -26,7 +26,7 @@ const Page = async () => {
 
       <SignedIn>
         {/* Dashboard (shown when logged in) */}
-        <h1 className="text-2xl">Popular companions</h1>
+        <h1 className="text-3xl text-white">🚀 Trending Buddies</h1>
         <section className="home-section">
           {companions.map((companion) => (
             <CompanionCard key={companion.id} {...companion} />
@@ -35,7 +35,7 @@ const Page = async () => {
         {user && (
           <section className="home-section">
             <CompanionsList
-              title="Recently completed sessions"
+              title="🎯 Recently completed sessions "
               companions={await getRecentSessions(user.id, 10)}
               classNames="w-2/3 max-lg:w-full"
             />

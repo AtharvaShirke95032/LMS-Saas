@@ -1,36 +1,42 @@
+
+import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+// import Spline from '@splinetool/react-spline/next';
 
-const constant = ["Build a personalized learning experience", " with our LMS."];
-const CTA = () => {
+const Cta = () => {
+
   return (
-    <div className="cta-section bg-[#1f1f1f]">
-      <div className="cta-badge">Start learning your way.</div>
+    <section className="w-full px-6 py-12 bg-black text-white relative rounded-3xl overflow-hidden max-w-lg mx-auto flex flex-col items-center text-center gap-6">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-32 w-[80%] bg-[#93cf2f]/20 blur-2xl rounded-full pointer-events-none z-0" />
+            {/* <Spline
+        scene="https://prod.spline.design/ba0AuQwcNra-raCd/scene.splinecode" 
+      /> */}
+      {/* <Spline
+        scene="https://prod.spline.design/uNKlMIrv7BOh2izZ/scene.splinecode" 
+      /> */}
+      <div className="text-xl font-semibold text-[#93cf2f] px-4 py-1 rounded-full z-10">
+        "Start learning your way"
+      </div>
 
-      <h2 className="text-3xl font-bold">
-        Build a Personalize Learning Companion
+      {/* Heading */}
+      <h2 className="text-3xl md:text-4xl font-bold leading-snug z-10">
+        Build and Personalize Your Learning Companion
       </h2>
 
-      <p className="text-sm text-center text-gray-300 px-2">
+      {/* Subtext */}
+      <p className="text-gray-300 max-w-xl z-10">
         Pick a name, subject, voice, & personality — and start learning through
         voice conversations that feel natural and fun.
       </p>
 
-      <div className="grid grid-cols-3 gap-4 justify-items-center py-2">
-        {/* <img src="/icons/flask.png" alt="Science" className="w-8 h-8" />
-        <img src="/icons/code.png" alt="Code" className="w-8 h-8" />
-        <img src="/icons/math.png" alt="Math" className="w-8 h-8" />
-        <img src="/icons/cap.png" alt="Learning" className="w-8 h-8" />
-        <img src="/icons/group.png" alt="Group" className="w-8 h-8" />
-        <img src="/icons/chat.png" alt="Chat" className="w-8 h-8" /> */}
-      </div>
-      <button className="btn-primary">
-        <Link href={"/companions/new"}>
-          <p>+ Build a new Companion</p>
-        </Link>
-      </button>
-    </div>
+      {/* CTA Button */}
+      <Link href="/companions/new" className="z-10">
+        <button className="flex items-center gap-2 bg-[#93cf2f] hover:bg-[#addb53] text-black font-semibold px-5 py-3 rounded-full transition">
+          <Image src="/icons/plus.svg" alt="plus" width={14} height={14} />
+          <span>Build a New Companion</span>
+        </button>
+      </Link>
+    </section>
   );
 };
-
-export default CTA;
+export default Cta;

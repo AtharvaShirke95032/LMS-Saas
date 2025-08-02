@@ -21,17 +21,18 @@ const Profile = async () => {
   const companions = await getUserCompanions(user.id);
   const SessionHistory = await getUserSessions(user.id);
   return (
-    <main className="min-lg:w-3/4">
+    <main className="min-lg:w-3/4 bg-transparent">
       <section className="flex justify-between gap-4 max-sm:flex-col items-center">
         <div className="flex gap-4 items-center">
-          <Image
+          <Image 
+          className="rounded-2xl"
             src={user.imageUrl}
             alt={user.firstName!}
             width={110}
             height={110}
           />
           <div className="flex flex-col gap-2">
-            <h1 className="font-bold text-2xl">
+            <h1 className="font-bold text-2xl text-white">
               {user.firstName} {user.lastName}
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -40,35 +41,35 @@ const Profile = async () => {
           </div>
         </div>
         <div className="flex gap-4">
-          <div className="border border-black rounded-lg gap-2 p-3 flex flex-col h-fit">
+          <div className="border border-white rounded-lg gap-2 p-3 flex flex-col h-fit ">
             <div className="flex gap-2 items-center">
               <Image src="/icons/check.svg" alt="checkmark" height={22} width={22}/>
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-bold text-white">
                 {SessionHistory.length}
               </p>
             </div>
-            <div>Lessons Completed</div>
+            <div className="text-white">Lessons Completed</div>
           </div>
-          <div className="border border-black rounded-lg gap-2 p-3 flex flex-col h-fit">
+          <div className="border border-white rounded-lg gap-2 p-3 flex flex-col h-fit">
             <div className="flex gap-2 items-center">
               <Image src="/icons/cap.svg" alt="cap" height={22} width={22}/>
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-bold text-white">
                 {companions.length}
               </p>
             </div>
-            <div>Companions Created</div>
+            <div className="text-white">Companions Created</div>
           </div>
         </div>
       </section>
       <Accordion type="multiple">
         <AccordionItem value="recent">
-          <AccordionTrigger className="text-2xl font-bold">Recent Sessions</AccordionTrigger>
+          <AccordionTrigger className="text-2xl font-bold text-white">Recent Sessions</AccordionTrigger>
           <AccordionContent>
             <CompanionsList title="Recent Sessions" companions={SessionHistory}/>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="companions">
-           <AccordionTrigger className="text-2xl font-bold">My Companions {`(${companions.length})`}</AccordionTrigger>
+           <AccordionTrigger className="text-2xl font-bold text-white">My Companions {`(${companions.length})`}</AccordionTrigger>
            <AccordionContent>
             <CompanionsList title="My Companions" companions={companions}/>
           </AccordionContent>

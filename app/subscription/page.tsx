@@ -3,7 +3,7 @@ import React from 'react'
 
 const Subscription = () => {
   return (
-    <main>
+    <main className='bg-transparent'>
       <PricingTable/>
     </main>
   )

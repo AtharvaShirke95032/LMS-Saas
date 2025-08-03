@@ -10,6 +10,7 @@ const navItems = [
   { label: "Companions", href: "/companions" },
   { label: "Pricing", href: "/subscription" },
   { label: "My Learnings", href: "/my-journey" },
+  { label: "notes", href: "/notes" },
 ];
 
 const NavItems = () => {

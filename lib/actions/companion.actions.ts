@@ -1,5 +1,4 @@
 "use server";
-
 import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 import { Filter } from "lucide-react";
@@ -21,7 +20,7 @@ export const createCompanion = async (FormData: CreateCompanion) => {
 
 export const getAllCompanions = async ({limit = 10,page = 1,subject,topic}: GetAllCompanions) => {
   const supabase = createSupabaseClient();
-
+  
   let query = supabase.from("companions").select();
   if (subject && topic) {
     query = query
@@ -177,3 +176,37 @@ export const newCompanionPermissions = async()=>{
       return true;
     }
 }
+
+export const getCompanionDetails = async (companionId:string)=>{
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from("companions")
+    .select("name") // or specify: "id, name, subject, topic"
+    .eq("id", companionId) // filter by name
+    .single(); // get exactly one match
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+
+//embbeding 
+
+export const storingEmbed = async (
+  content: string,
+  companionId: string,
+  embedding: number[]
+) => {
+  const supabase = createSupabaseClient();
+
+  const { error } = await supabase.from("conversations").insert({
+    content,
+    companion_id: companionId,
+    embedding,
+  });
+
+  if (error) {
+    console.error("Error storing embedding:", error.message);
+  } else {
+    console.log("Embedding stored successfully.");
+  }
+};

@@ -9,9 +9,10 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import soundwaves from "@/constants/soundwaves.json";
-import { addToSessionHistory } from "@/lib/actions/companion.actions";
+import { addToSessionHistory, getCompanionDetails, storingEmbed } from "@/lib/actions/companion.actions";
+import { generateEmbeddingFromGemini } from "@/lib/prompt";
 
-
+export let reverse : string[] = [] ;
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -34,7 +35,6 @@ const CompanionComponent = ({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
-
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   useEffect(() => {
     if (lottieRef) {
@@ -45,18 +45,20 @@ const CompanionComponent = ({
       }
     }
   }, [isSpeaking, lottieRef]);
-
+ 
+  
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
 
     const onCallEnd = () => {
       setCallStatus(CallStatus.FINISHED);
       addToSessionHistory(companionId);
+  
     }
 
     const onMessage = (message:Message) => {
         if(message.type === "transcript" && message.transcriptType ==="final") {
-            const newMessage= {role:message.role,content:message.transcript}
+            const newMessage= {role:message.role,content:message.transcript};
             setMessages((prev) =>[newMessage,...prev])
         }
     };
@@ -90,26 +92,98 @@ const CompanionComponent = ({
   };
 
   const handleCall = async()=>{
-    setCallStatus(CallStatus.CONNECTING)
+    const companion = await getCompanionDetails(companionId);
+    setCallStatus(CallStatus.CONNECTING);
+    const query = `Summarize the important facts the assistant learned about the user in this conversation. 
+        Include their name, interests, background, goals, preferences, and any questions they asked. 
+        Only include clear and confirmed facts, avoid assumptions.`;
+    
+    const embedRes = await fetch("/api/embed",{
+        method: "POST",
+        body:JSON.stringify({text:query}),
+        headers:{"Content-Type": "application/json"},
+    }) 
+
+    const embedData = await embedRes.json();
+    const queryEmbedding = embedData.embedding;
+    console.log("queryEmbedding",queryEmbedding)
+
+    const matchRes = await fetch("/api/match",{
+      method:"POST",
+      body:JSON.stringify({
+      embedding: queryEmbedding,
+      companionId,  
+      matchThreshold: 0.3,
+      matchCount: 3,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const matches = await matchRes.json();
+    console.log("Matches returned:", matches);
+    const memorySnippet = matches.map((m: any) => m.content).join("\n");
+      console.log(" Memory :", memorySnippet);
     const assistantOverrides = { 
-        variableValues:{
-            subject,topic,style
-        },
-        clientMessages:["transcript"],
-        serverMessages:[]
-
-
+      variableValues:{
+          subject,
+          topic,
+          style,
+          name:companion.name,
+          memory: memorySnippet, 
+      },
+      clientMessages:["transcript"],
+      serverMessages:[]
     }
     //@ts-expect-error
     vapi.start(configureAssistant(voice,style),assistantOverrides)
   }
-
+         
   const handleDisconnect = async()=>{
     setCallStatus(CallStatus.FINISHED);
-    vapi.stop()
+      
+    vapi.stop();
+    // const assistantContents = messages
+    //   .filter((msg) => msg.role === "assistant")
+    //   .map((msg) => msg.content);
+    //   reverse = assistantContents.reverse();
+    const assistantContents = messages.map((msg)=>({
+      role: msg.role,
+      content: msg.content
+    }))
+    const reverse = assistantContents.reverse();
+    // console.log("reverse",reverse);
+    
+const combinedText = reverse.map(m => `${m.role}: ${m.content}`).join("\n");
+
+console.log("Combined text to embed:", combinedText);
+
+    const res = await fetch("/api/embed",{
+      method: "POST",
+       body: JSON.stringify({text:combinedText}),
+        headers: { "Content-Type": "application/json" },
+    })
+
+
+
+    const data = await res.json();
+    const embedding = data.embedding;
+    console.log("embedded",embedding)
+
+
+ 
+   await storingEmbed(
+    combinedText,
+    companionId,
+    embedding
+   )
+   console.log("Storing to Supabase:", { combinedText, companionId, embeddingLength: embedding.length });
+
+
+   console.log("storingEmbed finished");
   }
   return (
-    <section className="flex flex-col h-[70vh]">
+    <section className="flex flex-col h-[70vh] bg-transparent">
       <section className="flex gap-8 max-sm:flex-col">
         <div className="companion-section">
           <div

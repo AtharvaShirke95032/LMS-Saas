@@ -14,11 +14,11 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 const Page = async () => {
-  const companions = await getAllCompanions({ limit: 3 });
-  const user = await currentUser();
+const user = await currentUser();
+const companions = await getAllCompanions({ limit: 3 });
 
   return (
-    <main className="bg-transparent">
+    <main className="bg-transparent ">
       <SignedOut>
         
         <LandingPage/>
@@ -29,7 +29,16 @@ const Page = async () => {
         <h1 className="text-3xl text-white">🚀 Trending Buddies</h1>
         <section className="home-section">
           {companions.map((companion) => (
-            <CompanionCard key={companion.id} {...companion} />
+            <CompanionCard
+  key={companion.id}
+  id={companion.id}
+  name={companion.name}
+  topic={companion.topic}
+  subject={companion.subject}
+  duration={companion.duration}
+  authorName={`${user?.firstName ?? "Unknown"} ${user?.lastName ?? ""}`}
+  authorAvatar={user?.imageUrl}
+/>
           ))}
         </section>
         {user && (

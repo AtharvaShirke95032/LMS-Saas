@@ -95,19 +95,16 @@ const CompanionComponent = ({
     const companion = await getCompanionDetails(companionId);
     setCallStatus(CallStatus.CONNECTING);
     const query = `Summarize the important facts the assistant learned about the user in this conversation. 
-        Include their name, interests, background, goals, preferences, and any questions they asked. 
-        Only include clear and confirmed facts, avoid assumptions.`;
-    
+      Include their name, interests, background, goals, preferences, and any questions they asked. 
+      Only include clear and confirmed facts, avoid assumptions.`;
     const embedRes = await fetch("/api/embed",{
-        method: "POST",
-        body:JSON.stringify({text:query}),
-        headers:{"Content-Type": "application/json"},
+      method: "POST",
+      body:JSON.stringify({text:query}),
+      headers:{"Content-Type": "application/json"},
     }) 
-
     const embedData = await embedRes.json();
     const queryEmbedding = embedData.embedding;
     console.log("queryEmbedding",queryEmbedding)
-
     const matchRes = await fetch("/api/match",{
       method:"POST",
       body:JSON.stringify({
@@ -123,7 +120,7 @@ const CompanionComponent = ({
     const matches = await matchRes.json();
     console.log("Matches returned:", matches);
     const memorySnippet = matches.map((m: any) => m.content).join("\n");
-      console.log(" Memory :", memorySnippet);
+    console.log(" Memory :", memorySnippet);
     const assistantOverrides = { 
       variableValues:{
           subject,
@@ -140,46 +137,34 @@ const CompanionComponent = ({
   }
          
   const handleDisconnect = async()=>{
-    setCallStatus(CallStatus.FINISHED);
-      
+    setCallStatus(CallStatus.FINISHED);  
     vapi.stop();
     // const assistantContents = messages
     //   .filter((msg) => msg.role === "assistant")
     //   .map((msg) => msg.content);
     //   reverse = assistantContents.reverse();
-    const assistantContents = messages.map((msg)=>({
-      role: msg.role,
-      content: msg.content
-    }))
-    const reverse = assistantContents.reverse();
-    // console.log("reverse",reverse);
-    
-const combinedText = reverse.map(m => `${m.role}: ${m.content}`).join("\n");
-
-console.log("Combined text to embed:", combinedText);
-
+  const assistantContents = messages.map((msg)=>({
+    role: msg.role,
+    content: msg.content
+  }))
+  const reverse = assistantContents.reverse();
+    // console.log("reverse",reverse);    
+  const combinedText = reverse.map(m => `${m.role}: ${m.content}`).join("\n");
+  console.log("Combined text to embed:", combinedText);
     const res = await fetch("/api/embed",{
       method: "POST",
        body: JSON.stringify({text:combinedText}),
         headers: { "Content-Type": "application/json" },
     })
-
-
-
     const data = await res.json();
     const embedding = data.embedding;
     console.log("embedded",embedding)
-
-
- 
    await storingEmbed(
     combinedText,
     companionId,
     embedding
    )
    console.log("Storing to Supabase:", { combinedText, companionId, embeddingLength: embedding.length });
-
-
    console.log("storingEmbed finished");
   }
   return (

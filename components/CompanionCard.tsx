@@ -1,76 +1,90 @@
+"use client";
+
+import { getSubjectColor } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { FollowerPointerCard } from "@/components/aceternity/following-pointer";
+
 interface CompanionCardProps {
   id: string;
   name: string;
   topic: string;
   subject: string;
   duration: number;
-  author: string;
+  authorName: string;
+  authorAvatar?: string;
 }
 
-import { getSubjectColor } from "@/lib/utils";
-import { clerkClient } from "@clerk/nextjs/server";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+const TitleComponent = ({
+  title,
+  avatar,
+}: {
+  title?: string;
+  avatar?: string;
+}) => (
+  <div className="flex items-center space-x-2">
+    {avatar && (
+      <img
+        src={avatar}
+        height="20"
+        width="20"
+        alt="avatar"
+        className="rounded-full border-2 border-white"
+      />
+    )}
+    <p>{title}</p>
+  </div>
+);
 
-
-
-const CompanionCard = async ({
+const CompanionCard = ({
   id,
   name,
   topic,
   subject,
   duration,
-  author,
+  authorName,
+  authorAvatar,
 }: CompanionCardProps) => {
-  const client = await clerkClient();
-  const userinfo = await client.users.getUser(author);
   return (
-    <article className="companion-card custom-dash" >
-      <div className="flex justify-between items-center">
-        <div
-          className="subject-badge"
-          style={{ backgroundColor: getSubjectColor(subject) }}
-        >
-          {subject}
-        </div>
-        <button className="companion-bookmark">
-          <Image
-            src="/icons/bookmark.svg"
-            alt="bookmark"
-            width={12.5}
-            height={15}
-          />
-        </button>
-      </div>
+    <div className="relative companion-card ">
+      <FollowerPointerCard
+        title={<TitleComponent title={authorName} avatar={authorAvatar} />}
+      >
+        <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition duration-200 hover:shadow-xl">
+          <div className="p-4 space-y-4">
+            <div className="flex justify-between items-center">
+              <div
+                className="subject-badge text-xs font-bold uppercase px-2 py-1 rounded"
+                style={{ backgroundColor: getSubjectColor(subject) }}
+              >
+                {subject}
+              </div>
+             
+            <div className="flex items-center gap-2 text-white text-sm">
+              <Image src="/icons/clock.svg" alt="clock" width={13.5} height={13.5} />
+              {duration} minutes
+            </div>
 
-      <div className="flex gap-2 flex-col">
-        <h2 className="text-2xl text-white font-bold flex items-center justify-start">
-          {name}
-        </h2>
-        <p className="text-sm text-white border-2 rounded-xl border-white/15 w-fit p-4 flex items-center justify-center">
-          {topic}
-        </p>
-        <Image src="/icons/clock.svg" alt="clock" width={13.5} height={13.5} />
-        <p className="textsm text-white ">{duration} minutes</p>
-        <p className="text-white">
-          {userinfo.firstName}
-          {userinfo.lastName}
-        </p>
-      </div>
-      <Link href={`/companions/${id}`} className="w-full">
-        <button
-          className="btn-primary w-full justify-center"
-          // style={{
-          //   background:
-          //     "linear-gradient(155deg, rgba(10, 76, 242, 1) 0%, rgba(242, 247, 247, 1) 67%, rgba(47, 179, 245, 1) 100%)",
-          // }}
-        >
-          
-          Launch Lesson
-        </button>
-      </Link>
-    </article>
+            </div>
+
+            <h2 className="text-xl font-bold text-white">{name}</h2>
+
+            <p className="text-sm text-white border border-white/20 rounded-xl w-fit px-3 py-1">
+              {topic}
+            </p>
+
+            <p className="text-white text-xs">by {authorName}</p>
+
+            <Link href={`/companions/${id}`}>
+              <button className="btn-primary w-full justify-center mt-4">
+                Launch Lesson
+              </button>
+            </Link>
+          </div>
+        </div>
+      </FollowerPointerCard>
+    </div>
   );
 };
 

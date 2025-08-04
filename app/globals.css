@@ -150,13 +150,13 @@ body {
     @apply flex flex-wrap gap-4 w-full max-md:justify-center;
   }
   .companion-card {
-    @apply flex  flex-col rounded-4xl border-2 border-dashed  transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu bg-[#040404] border-white px-4 py-4 gap-5 w-full min-lg:max-w-[410px] justify-between;
+    @apply flex  flex-col rounded-4xl transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu bg-black border-white px-4 py-4 gap-5 w-full min-lg:max-w-[410px] justify-between;
   }
   .subject-badge {
     @apply  text-white font-semibold rounded-4xl text-sm px-2 py-1 capitalize;
   }
   .companion-bookmark {
-    @apply px-2 bg-black rounded-4xl flex items-center h-full aspect-square cursor-pointer;
+    @apply px-2 bg-black rounded-4xl flex items-center h-full aspect-square cursor-none;
   }
   .input {
     @apply !border-black !bg-white focus-visible:!ring-0 focus-visible:!border-black !w-full;
@@ -171,7 +171,7 @@ body {
     @apply bg-cta-gold rounded-4xl px-3 py-1.5 text-black;
   }
   .btn-primary {
-    @apply bg-[#93CF2F] text-black font-semibold rounded-full cursor-pointer px-4 py-3 flex items-center gap-2;
+    @apply bg-[#93CF2F] text-black font-semibold rounded-full cursor-none px-4 py-3 flex items-center gap-2;
   }
   /* .btn-primary {
     @apply  text-black font-semibold rounded-full cursor-pointer px-4 py-3 flex items-center gap-2;
@@ -184,7 +184,7 @@ body {
             sticky top-4 z-50 transition-all duration-300;
   }
   .btn-signin {
-    @apply border border-black rounded-4xl px-4 py-2.5 text-sm font-semibold flex items-center gap-2 cursor-pointer;
+    @apply border-2 border-white/15 rounded-4xl px-4 py-2 text-sm font-semibold flex items-center cursor-pointer;
   }
   .companion-list {
     @apply rounded-4xl border border-white px-7 pt-7 pb-10 max-lg:w-full bg-white;

@@ -35,8 +35,7 @@ const CompanionsLibrary = async ({searchParams}:SearchParams) => {
   topic={companion.topic}
   subject={companion.subject}
   duration={companion.duration}
-  authorName={`${userId?.firstName ?? "Unknown"} ${userId?.lastName ?? ""}`}
-  authorAvatar={userId?.imageUrl}
+  
 />
            ))}
         </section>

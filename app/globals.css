@@ -147,10 +147,10 @@ body {
     @apply flex gap-4 justify-between items-start w-full max-lg:flex-col-reverse max-lg:items-center;
   }
   .companions-grid {
-    @apply flex flex-wrap gap-4 w-full max-md:justify-center;
+    @apply flex flex-wrap gap-7 w-full max-md:justify-center;
   }
   .companion-card {
-    @apply flex  flex-col rounded-4xl transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu bg-black border-white px-4 py-4 gap-5 w-full min-lg:max-w-[410px] justify-between;
+    @apply flex flex-col rounded-4xl transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu bg-black border-white shadow-[0_0_10px_15px_#000000] w-full min-lg:max-w-[410px] justify-between cursor-none;
   }
   .subject-badge {
     @apply  text-white font-semibold rounded-4xl text-sm px-2 py-1 capitalize;
@@ -187,7 +187,7 @@ body {
     @apply border-2 border-white/15 rounded-4xl px-4 py-2 text-sm font-semibold flex items-center cursor-pointer;
   }
   .companion-list {
-    @apply rounded-4xl border border-white px-7 pt-7 pb-10 max-lg:w-full bg-white;
+    @apply rounded-4xl border-2 border-white/15 px-7 py-7 pb-10 max-lg:w-full bg-black  ; 
   }
   .companion-limit {
     @apply items-center justify-center flex flex-col gap-4 w-full min-2xl:w-1/2 pt-20 text-center;

@@ -210,3 +210,8 @@ export const storingEmbed = async (
     console.log("Embedding stored successfully.");
   }
 };
+
+// export const getUserFromCompanion = ({limit}:{limit:number})=>{
+//   const supabase = createSupabaseClient();
+//   const companions = await supabase.from()
+// }

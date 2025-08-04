@@ -9,14 +9,18 @@ import {
   getRecentSessions,
 } from "@/lib/actions/companion.actions";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import {currentUser } from "@clerk/nextjs/server";
+
 import { redirect } from "next/navigation";
 import React from "react";
 
 const Page = async () => {
 const user = await currentUser();
-const companions = await getAllCompanions({ limit: 3 });
 
+const companions = await getAllCompanions({ limit: 3 });
+const userId = companions.map((companion)=>companion.author)
+console.log("userId",userId)
+// console.log("companions:page",companions);
   return (
     <main className="bg-transparent ">
       <SignedOut>
@@ -36,8 +40,9 @@ const companions = await getAllCompanions({ limit: 3 });
   topic={companion.topic}
   subject={companion.subject}
   duration={companion.duration}
-  authorName={`${user?.firstName ?? "Unknown"} ${user?.lastName ?? ""}`}
-  authorAvatar={user?.imageUrl}
+  // authorName={`${user?.firstName ?? "Unknown"} ${user?.lastName ?? ""}`}
+  authorName={companion.author}
+  
 />
           ))}
         </section>

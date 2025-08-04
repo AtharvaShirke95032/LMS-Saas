@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import soundwaves from "@/constants/soundwaves.json";
 import { addToSessionHistory, getCompanionDetails, storingEmbed } from "@/lib/actions/companion.actions";
-import { generateEmbeddingFromGemini } from "@/lib/prompt";
+import { generateEmbeddingFromGemini, generateNote } from "@/lib/prompt";
 
 export let reverse : string[] = [] ;
 
@@ -104,7 +104,7 @@ const CompanionComponent = ({
     }) 
     const embedData = await embedRes.json();
     const queryEmbedding = embedData.embedding;
-    console.log("queryEmbedding",queryEmbedding)
+    // console.log("queryEmbedding",queryEmbedding)
     const matchRes = await fetch("/api/match",{
       method:"POST",
       body:JSON.stringify({
@@ -118,9 +118,9 @@ const CompanionComponent = ({
       },
     });
     const matches = await matchRes.json();
-    console.log("Matches returned:", matches);
+    // console.log("Matches returned:", matches);
     const memorySnippet = matches.map((m: any) => m.content).join("\n");
-    console.log(" Memory :", memorySnippet);
+    // console.log(" Memory :", memorySnippet);
     const assistantOverrides = { 
       variableValues:{
           subject,
@@ -158,14 +158,22 @@ const CompanionComponent = ({
     })
     const data = await res.json();
     const embedding = data.embedding;
-    console.log("embedded",embedding)
+    // console.log("embedded",embedding)
    await storingEmbed(
     combinedText,
     companionId,
     embedding
    )
-   console.log("Storing to Supabase:", { combinedText, companionId, embeddingLength: embedding.length });
-   console.log("storingEmbed finished");
+  //  generateNote(combinedText,companionId);
+   const res1 = await fetch("/api/notesGen",{
+    method:"POST",
+    body:JSON.stringify({combinedText,companionId}),
+    headers: { "Content-Type": "application/json" },
+   })
+   const data1 = await res1.json();
+   console.log(data1);
+  //  console.log("Storing to Supabase:", { combinedText, companionId, embeddingLength: embedding.length });
+  //  console.log("storingEmbed finished");
   }
   return (
     <section className="flex flex-col h-[70vh] bg-transparent">

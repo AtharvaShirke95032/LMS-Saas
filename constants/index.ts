@@ -14,6 +14,7 @@ export const subjectsColors = {
   coding: "#FFC8E4",
   history: "#FFECC8",
   economics: "#C8FFDF",
+  default: "#cccccc"
 };
 
 export const voices = {

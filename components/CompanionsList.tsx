@@ -28,7 +28,7 @@ const CompanionsList = ({
   )
   // console.log("filetered:",filtered);
   return (
-    <article className={cn("companion-list bg-neutral-900", classNames)}>
+    <article className={cn("companion-list shadow-[0_0_10px_15px_#000000]", classNames)}>
       <h2 className="font-bold text-3xl text-white">{title}</h2>
       <Table>
         <TableHeader>

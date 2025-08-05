@@ -2,14 +2,12 @@ import React from 'react'
 // import Spline from '@splinetool/react-spline/next';
 const LandingPage = () => {
   return (
-    <div>
-          {/* <Spline
-        scene="https://prod.spline.design/mbY9yC4cSaz-j8oU/scene.splinecode" 
-      /> */}
-       {/* <div className='w-20 h-12 bg-amber-700 -translate-y-50 -translate-x-[80px]'>
-    
-      </div> */}
-     
+    <div className='border-2 border-white w-full min-h-screen flex flex-col justify-center items-center gap-5 '>
+      <div className='border-2 border-white'> 
+        <h1>Landing Page</h1>
+        
+      </div>
+      
     </div>
   )
 }

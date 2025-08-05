@@ -15,9 +15,12 @@ import { useState } from "react";
 import { SignInButton,SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 
+
+
 export function NavbarDemo() {
+
   const navItems = [
-    { name: "Home", href: "/" },
+    { name: "Home",  href:"/"  },
     { name: "Companions", href: "/companions" },
     { name: "Pricing", href: "/subscription" },
     { name: "My Learnings", href: "/my-journey" },

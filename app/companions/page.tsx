@@ -29,14 +29,13 @@ const CompanionsLibrary = async ({searchParams}:SearchParams) => {
         :<section className='companions-grid'>
            {companions.map((companion)=>(
           <CompanionCard
-  key={companion.id}
-  id={companion.id}
-  name={companion.name}
-  topic={companion.topic}
-  subject={companion.subject}
-  duration={companion.duration}
-  
-/>
+            key={companion.id}
+            id={companion.id}
+            name={companion.name}
+            topic={companion.topic}
+            subject={companion.subject}
+            duration={companion.duration}
+          />
            ))}
         </section>
       } 

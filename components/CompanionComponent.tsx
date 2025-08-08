@@ -1,6 +1,5 @@
 "use client";
 
-import { subjects } from "@/constants";
 import { cn, configureAssistant, getSubjectColor } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 
@@ -9,10 +8,14 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import soundwaves from "@/constants/soundwaves.json";
-import { addToSessionHistory, getCompanionDetails, storingEmbed } from "@/lib/actions/companion.actions";
-import { generateEmbeddingFromGemini, generateNote } from "@/lib/prompt";
+import {
+  addToSessionHistory,
+  getCompanionDetails,
+  storingEmbed,
+} from "@/lib/actions/companion.actions";
 
-export let reverse : string[] = [] ;
+
+export let reverse: string[] = [];
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -45,22 +48,20 @@ const CompanionComponent = ({
       }
     }
   }, [isSpeaking, lottieRef]);
- 
-  
+
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
 
     const onCallEnd = () => {
       setCallStatus(CallStatus.FINISHED);
       addToSessionHistory(companionId);
-  
-    }
+    };
 
-    const onMessage = (message:Message) => {
-        if(message.type === "transcript" && message.transcriptType ==="final") {
-            const newMessage= {role:message.role,content:message.transcript};
-            setMessages((prev) =>[newMessage,...prev])
-        }
+    const onMessage = (message: Message) => {
+      if (message.type === "transcript" && message.transcriptType === "final") {
+        const newMessage = { role: message.role, content: message.transcript };
+        setMessages((prev) => [newMessage, ...prev]);
+      }
     };
 
     const onSpeechStart = () => setIsSpeaking(true);
@@ -91,27 +92,27 @@ const CompanionComponent = ({
     setIsMuted(!isMuted);
   };
 
-  const handleCall = async()=>{
+  const handleCall = async () => {
     const companion = await getCompanionDetails(companionId);
     setCallStatus(CallStatus.CONNECTING);
     const query = `Summarize the important facts the assistant learned about the user in this conversation. 
       Include their name, interests, background, goals, preferences, and any questions they asked. 
       Only include clear and confirmed facts, avoid assumptions.`;
-    const embedRes = await fetch("/api/embed",{
+    const embedRes = await fetch("/api/embed", {
       method: "POST",
-      body:JSON.stringify({text:query}),
-      headers:{"Content-Type": "application/json"},
-    }) 
+      body: JSON.stringify({ text: query }),
+      headers: { "Content-Type": "application/json" },
+    });
     const embedData = await embedRes.json();
     const queryEmbedding = embedData.embedding;
     // console.log("queryEmbedding",queryEmbedding)
-    const matchRes = await fetch("/api/match",{
-      method:"POST",
-      body:JSON.stringify({
-      embedding: queryEmbedding,
-      companionId,  
-      matchThreshold: 0.3,
-      matchCount: 3,
+    const matchRes = await fetch("/api/match", {
+      method: "POST",
+      body: JSON.stringify({
+        embedding: queryEmbedding,
+        companionId,
+        matchThreshold: 0.3,
+        matchCount: 3,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -121,60 +122,60 @@ const CompanionComponent = ({
     // console.log("Matches returned:", matches);
     const memorySnippet = matches.map((m: any) => m.content).join("\n");
     // console.log(" Memory :", memorySnippet);
-    const assistantOverrides = { 
-      variableValues:{
-          subject,
-          topic,
-          style,
-          name:companion.name,
-          memory: memorySnippet, 
+    const assistantOverrides = {
+      variableValues: {
+        subject,
+        topic,
+        style,
+        name: companion.name,
+        memory: memorySnippet,
       },
-      clientMessages:["transcript"],
-      serverMessages:[]
-    }
+      clientMessages: ["transcript"],
+      serverMessages: [],
+    };
     //@ts-expect-error
-    vapi.start(configureAssistant(voice,style),assistantOverrides)
-  }
-         
-  const handleDisconnect = async()=>{
-    setCallStatus(CallStatus.FINISHED);  
+    vapi.start(configureAssistant(voice, style), assistantOverrides);
+  };
+
+  const handleDisconnect = async () => {
+    setCallStatus(CallStatus.FINISHED);
     vapi.stop();
     // const assistantContents = messages
     //   .filter((msg) => msg.role === "assistant")
     //   .map((msg) => msg.content);
     //   reverse = assistantContents.reverse();
-  const assistantContents = messages.map((msg)=>({
-    role: msg.role,
-    content: msg.content
-  }))
-  const reverse = assistantContents.reverse();
-    // console.log("reverse",reverse);    
-  const combinedText = reverse.map(m => `${m.role}: ${m.content}`).join("\n");
-  console.log("Combined text to embed:", combinedText);
-    const res = await fetch("/api/embed",{
+    const assistantContents = messages.map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
+    const reverse = assistantContents.reverse();
+    // console.log("reverse",reverse);
+    const combinedText = reverse
+      .map((m) => `${m.role}: ${m.content}`)
+      .join("\n");
+    console.log("Combined text to embed:", combinedText);
+    const res = await fetch("/api/embed", {
       method: "POST",
-       body: JSON.stringify({text:combinedText}),
-        headers: { "Content-Type": "application/json" },
-    })
+      body: JSON.stringify({ text: combinedText }),
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await res.json();
     const embedding = data.embedding;
     // console.log("embedded",embedding)
-   await storingEmbed(
-    combinedText,
-    companionId,
-    embedding
-   )
-  //  generateNote(combinedText,companionId);
-   const res1 = await fetch("/api/notesGen",{
-    method:"POST",
-    body:JSON.stringify({combinedText,companionId}),
-    headers: { "Content-Type": "application/json" },
-   })
-   const data1 = await res1.json();
-   console.log(data1);
-  //  console.log("Storing to Supabase:", { combinedText, companionId, embeddingLength: embedding.length });
-  //  console.log("storingEmbed finished");
-  }
+    await storingEmbed(combinedText, companionId, embedding);
+    //fetch notes
+
+    //  generateNote(combinedText,companionId);
+    const res1 = await fetch("/api/notesGen", {
+      method: "POST",
+      body: JSON.stringify({ companionId }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data1 = await res1.json();
+    console.log(data1);
+    //  console.log("Storing to Supabase:", { combinedText, companionId, embeddingLength: embedding.length });
+    //  console.log("storingEmbed finished");
+  };
   return (
     <section className="flex flex-col h-[70vh] bg-transparent">
       <section className="flex gap-8 max-sm:flex-col">
@@ -229,7 +230,11 @@ const CompanionComponent = ({
             />
             <p className="font-bold text-white">{userName}</p>
           </div>
-          <button className="btn-mic" onClick={toggleMicrophone} disabled={callStatus !== CallStatus.ACTIVE}>
+          <button
+            className="btn-mic"
+            onClick={toggleMicrophone}
+            disabled={callStatus !== CallStatus.ACTIVE}
+          >
             <Image
               src={isMuted ? "/icons/mic-off.svg" : "/icons/mic-on.svg"}
               alt="mic"
@@ -243,8 +248,12 @@ const CompanionComponent = ({
           <button
             className={cn(
               "rounded-lg py-2 cursor-pointer transition-colors w-full text-white",
-              callStatus === CallStatus.ACTIVE ? "bg-red-700" : "bg-primary", callStatus === CallStatus.CONNECTING && "animate-pulse"
-            )} onClick={callStatus===CallStatus.ACTIVE ? handleDisconnect : handleCall}
+              callStatus === CallStatus.ACTIVE ? "bg-red-700" : "bg-primary",
+              callStatus === CallStatus.CONNECTING && "animate-pulse"
+            )}
+            onClick={
+              callStatus === CallStatus.ACTIVE ? handleDisconnect : handleCall
+            }
           >
             {callStatus === CallStatus.ACTIVE
               ? "End Session"
@@ -257,18 +266,23 @@ const CompanionComponent = ({
 
       <section className="transcript">
         <div className="transcript-message no-scrollbar">
-            {messages.map((message,index)=>{
-                if(message.role === "assistant") {
-                    return(
-                        <p key={index} className="max-sm:text-sm text-white">{name.split(' ')[0].replace('/[.,]/g,','')}:{message.content}</p>
-                    )
-                }else{
-                   return <p key={index} className="text-white max-sm:text-sm ">{userName}:{message.content}</p>
-                }
-            })
+          {messages.map((message, index) => {
+            if (message.role === "assistant") {
+              return (
+                <p key={index} className="max-sm:text-sm text-white">
+                  {name.split(" ")[0].replace("/[.,]/g,", "")}:{message.content}
+                </p>
+              );
+            } else {
+              return (
+                <p key={index} className="text-white max-sm:text-sm ">
+                  {userName}:{message.content}
+                </p>
+              );
             }
+          })}
         </div>
-        <div className="transcript-fade"/>
+        <div className="transcript-fade" />
       </section>
     </section>
   );

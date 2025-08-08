@@ -5,7 +5,6 @@ const LandingPage = () => {
     <div className='border-2 border-white w-full min-h-screen flex flex-col justify-center items-center gap-5 '>
       <div className='border-2 border-white'> 
         <h1>Landing Page</h1>
-        
       </div>
       
     </div>

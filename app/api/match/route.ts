@@ -22,8 +22,8 @@ export async function POST(req: Request) {
       match_threshold: matchThreshold,
       match_count: matchCount,
     });
-    console.log("Embedding for match:", embedding.slice(0, 5)); 
-    console.log("Matches from Supabase:", data);
+    // console.log("Embedding for match:", embedding.slice(0, 5)); 
+    // console.log("Matches from Supabase:", data);
 
      if (error) {
       console.error("Error calling match_conversations:", error.message);

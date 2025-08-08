@@ -30,7 +30,7 @@ const SearchInput = () => {
           router.push(newUrl, { scroll: false });
         }
       }
-    },500);
+    }, 500);
   }, [searchQuery, router, searchParams, pathname]);
   return (
     <div className="relative border border-white rounded-lg items-center flex gap-2 px-2 py-1 h-fit">

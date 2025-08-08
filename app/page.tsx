@@ -2,6 +2,7 @@ import CompanionCard from "@/components/CompanionCard";
 import CompanionsList from "@/components/CompanionsList";
 import CTA from "@/components/CTA";
 import LandingPage from "@/components/LandingPage";
+import MarketPlace from "@/components/marketplaceCard";
 import { Button } from "@/components/ui/button";
 import { recentSessions } from "@/constants";
 import {
@@ -19,7 +20,7 @@ const Page = async () => {
 
   const companions = await getAllCompanions({ limit: 3 });
   const userId = companions.map((companion) => companion.author);
-  console.log("userId", userId);
+  // console.log("userId", userId);
   // console.log("companions:page",companions);
   
   return (
@@ -33,10 +34,11 @@ const Page = async () => {
       
         {/* Dashboard (shown when logged in) */}
         <h1 className="text-3xl text-white">🚀 Trending Buddies</h1>
-        <section className="home-section">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
           {companions.map((companion) => (
-            <CompanionCard
+            <MarketPlace
               key={companion.id}
+              // notesId={}
               id={companion.id}
               name={companion.name}
               topic={companion.topic}

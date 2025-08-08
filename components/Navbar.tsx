@@ -12,19 +12,16 @@ import {
   MobileNavMenu,
 } from "@/components/aceternity/resizable-navbar";
 import { useState } from "react";
-import { SignInButton,SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-
-
-
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 export function NavbarDemo() {
-
   const navItems = [
-    { name: "Home",  href:"/"  },
+    { name: "Home", href: "/" },
     { name: "Companions", href: "/companions" },
     { name: "Pricing", href: "/subscription" },
+    { name: "Marketplace", href: "/marketplace" },
     { name: "My Learnings", href: "/my-journey" },
-    { name: "notes", href: "/notes" },
+   
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,16 +37,16 @@ export function NavbarDemo() {
             <SignedOut>
               <SignInButton>
                 <NavbarButton
-                    variant="dark"
-                    className="w-full"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign
-                  </NavbarButton>
+                  variant="dark"
+                  className="w-full"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign
+                </NavbarButton>
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <UserButton/>
+              <UserButton />
             </SignedIn>
           </div>
         </NavBody>
@@ -58,29 +55,26 @@ export function NavbarDemo() {
         <MobileNav>
           <MobileNavHeader>
             <NavbarLogo />
-             
+
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             />
-              <SignedIn>
-                <NavbarButton
-                  variant="dark"
-                  className="w-fit"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <UserButton />
-                </NavbarButton>
-              </SignedIn>
-
+            <SignedIn>
+              <NavbarButton
+                variant="dark"
+                className="w-fit"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <UserButton />
+              </NavbarButton>
+            </SignedIn>
           </MobileNavHeader>
-
 
           <MobileNavMenu
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
           >
-          
             {navItems.map((item, idx) => (
               <a
                 key={`mobile-link-${idx}`}
@@ -103,11 +97,8 @@ export function NavbarDemo() {
                   </NavbarButton>
                 </SignInButton>
               </SignedOut>
-             
             </div>
-            
           </MobileNavMenu>
-          
         </MobileNav>
       </Navbar>
     </div>

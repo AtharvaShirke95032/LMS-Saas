@@ -20,8 +20,9 @@ const ComapionSession = async ({params}:companionSessionPageProps) => {
 
   if(!name) redirect("/companions")
   return (
-    <main className='bg-neutral-900'>
-      <article className='flex rounded-border border-white justify-between p-6 max-md:flex-col'>
+    <main className='bg-transparent'>
+      <div className='bg-neutral-900'>
+        <article className='flex rounded-border border-white justify-between p-6 max-md:flex-col'>
         <div className='flex items-center gap-2'>
           <div className='size-[72px] flex items-center justify-center rounded-lg max-md:hidden' style={{backgroundColor:getSubjectColor(subject)}}>
             <Image src={`/icons/${subject}.svg`} alt={subject} width={35} height={35} />
@@ -39,13 +40,15 @@ const ComapionSession = async ({params}:companionSessionPageProps) => {
           </div>
         </div>
         <div className='items-start text-2xl max-md:hidden text-white'>{duration} minutes</div>
-      </article>
-      <CompanionComponent
-        {...companion}
-        companionId={id}
-        userName={user.firstName!}
-        userImage ={user.imageUrl!}
-      />
+        </article>
+        <CompanionComponent
+          {...companion}
+          companionId={id}
+          userName={user.firstName!}
+          userImage ={user.imageUrl!}
+        />
+      </div>
+     
     </main>
   )
 }

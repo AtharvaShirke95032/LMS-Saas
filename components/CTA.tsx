@@ -1,14 +1,12 @@
-
 import Image from "next/image";
 import Link from "next/link";
 // import Spline from '@splinetool/react-spline/next';
 
 const Cta = () => {
-
   return (
     <section className="w-full px-6 py-12 bg-black text-white relative rounded-3xl overflow-hidden max-w-lg mx-auto flex flex-col items-center text-center gap-6">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-32 w-[80%] bg-[#93cf2f]/20 blur-2xl rounded-full pointer-events-none z-0" />
-            {/* <Spline
+      {/* <Spline
         scene="https://prod.spline.design/ba0AuQwcNra-raCd/scene.splinecode" 
       /> */}
       {/* <Spline

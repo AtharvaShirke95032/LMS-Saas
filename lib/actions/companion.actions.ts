@@ -1,8 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
-import { Filter } from "lucide-react";
-import { relative } from "path";
+
 
 export const createCompanion = async (FormData: CreateCompanion) => {
   const { userId: author } = await auth();
@@ -18,9 +17,14 @@ export const createCompanion = async (FormData: CreateCompanion) => {
   return data[0];
 };
 
-export const getAllCompanions = async ({limit = 10,page = 1,subject,topic}: GetAllCompanions) => {
+export const getAllCompanions = async ({
+  limit = 10,
+  page = 1,
+  subject,
+  topic,
+}: GetAllCompanions) => {
   const supabase = createSupabaseClient();
-  
+
   let query = supabase.from("companions").select();
   if (subject && topic) {
     query = query
@@ -109,7 +113,7 @@ export const getUserSessions = async (userId: string, limit = 10) => {
 
 export const getUserCompanions = async (userId: string) => {
   const supabase = createSupabaseClient();
-  
+
   const { data, error } = await supabase
     .from("companions")
     .select()
@@ -147,37 +151,37 @@ export const filterComponents = async ({
   return companions;
 };
 
-export const newCompanionPermissions = async()=>{
-  const {userId,has} = await auth();
+export const newCompanionPermissions = async () => {
+  const { userId, has } = await auth();
   const supabase = createSupabaseClient();
 
   let limit = 0;
 
-  if(has({plan:"pro"})){
+  if (has({ plan: "pro" })) {
     return true;
-  }else if(has({feature:"3_companion_limit"})){
+  } else if (has({ feature: "3_companion_limit" })) {
     limit = 3;
-  }else if(has({feature:"10_companion_limit"})){
-    limit= 10;
+  } else if (has({ feature: "10_companion_limit" })) {
+    limit = 10;
   }
 
-  const {data,error} = await supabase
+  const { data, error } = await supabase
     .from("companions")
-    .select("id",{count:"exact"})
-    .eq("author",userId)
-  
-    if(error) throw new Error(error.message);
+    .select("id", { count: "exact" })
+    .eq("author", userId);
 
-    const companionCount = data?.length;
+  if (error) throw new Error(error.message);
 
-    if(companionCount>= limit){
-      return false;
-    }else{ 
-      return true;
-    }
-}
+  const companionCount = data?.length;
 
-export const getCompanionDetails = async (companionId:string)=>{
+  if (companionCount >= limit) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const getCompanionDetails = async (companionId: string) => {
   const supabase = createSupabaseClient();
   const { data, error } = await supabase
     .from("companions")
@@ -186,10 +190,9 @@ export const getCompanionDetails = async (companionId:string)=>{
     .single(); // get exactly one match
   if (error) throw new Error(error.message);
   return data;
-}
+};
 
-
-//embbeding 
+//embbeding
 
 export const storingEmbed = async (
   content: string,
@@ -215,3 +218,63 @@ export const storingEmbed = async (
 //   const supabase = createSupabaseClient();
 //   const companions = await supabase.from()
 // }
+
+// export const fetchNotes = async (companionId:string)=>{
+//   const supabase = createSupabaseClient()
+//   const{data,error} = await supabase.from("companions").select("notes").eq("id",companionId);
+//   if(data){
+//     return data;
+//   }
+//   if(error){
+//     console.log("fetch error",error)
+//   }
+// }
+
+// export const fetchNotes = async()=>{
+//   const supabase = createSupabaseClient();
+//   const{data,error} = await supabase.from("notes").select("notesContent").eq("companion_id",companionId); 
+// }
+
+export async function getVoteScore(){
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from("votes")
+    .select("companion_id,vote_type")
+    
+    if (error) {
+      console.error("Error fetching vote scores:", error.message);
+    }
+
+
+  // console.log("data:",data)
+
+ const scores: Record<string, number> = {};
+    
+  data?.forEach(({ companion_id, vote_type }) => {
+  if (!scores[companion_id]) scores[companion_id] = 0;
+  
+  if (vote_type === true) {
+    scores[companion_id] += 1;
+  } else if (vote_type === false) {
+    scores[companion_id] -= 1;
+  }
+});
+// console.log(scores["2e6eb35e-5310-4f95-a0a5-1d2227560591"])
+return scores;
+}
+
+export async function supbaseRealtime(){
+  const supabase = createSupabaseClient()
+  const allChanges = supabase
+  .channel('Votes-Changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: "votes" 
+    },
+    (payload) => console.log("payload",payload)
+  )
+  .subscribe()
+}

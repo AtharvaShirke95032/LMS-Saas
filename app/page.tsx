@@ -8,6 +8,7 @@ import { recentSessions } from "@/constants";
 import {
   getAllCompanions,
   getRecentSessions,
+  getVoteScore,
 } from "@/lib/actions/companion.actions";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
@@ -19,10 +20,11 @@ const Page = async () => {
   const user = await currentUser();
 
   const companions = await getAllCompanions({ limit: 3 });
-  const userId = companions.map((companion) => companion.author);
+  // const userId = companions.map((companion) => companion.author);
   // console.log("userId", userId);
   // console.log("companions:page",companions);
-  
+   const voteScore =  await getVoteScore();
+    
   return (
     <main className="bg-transparent ">
      <SignedOut>
@@ -46,6 +48,7 @@ const Page = async () => {
               duration={companion.duration}
               // authorName={`${user?.firstName ?? "Unknown"} ${user?.lastName ?? ""}`}
               authorName={companion.author}
+              score = {voteScore[companion.id]}
             />
           ))}
         </section>

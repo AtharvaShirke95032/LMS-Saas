@@ -66,14 +66,14 @@ const MarketPlace = ({
   } catch (error) {
     console.error('Error loading saved vote:', error);
   }
-}, [id]);
+}, [id,authorName]);
 useEffect(() => {
   try {
     localStorage.setItem(`vote_${id}`, JSON.stringify(userVote));
   } catch (error) {
     console.error('Error saving vote:', error);
   }
-}, [userVote, id]);
+}, [userVote, id,authorName]);
   const handleVote = async (vote: VoteLogic) => {
     await supbaseRealtime();
     const newVote = userVote === vote ? null : vote;

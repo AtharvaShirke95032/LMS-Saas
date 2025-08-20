@@ -35,7 +35,7 @@ export async function generateNote(companionId: string) {
     apiKey: process.env.GEMINI_API_KEY as string,
   });
   const response = await genAI.models.generateContent({
-    model: "gemini-2.5-pro",
+    model: "gemini-2.5-flash",
     contents: `
   You are an AI tutor assistant that generates helpful, well-structured academic notes from student–tutor conversations.
   Task:

@@ -21,10 +21,10 @@ export const configureAssistant = (
       style as keyof (typeof voices)[keyof typeof voices]
     ] || "sarah";
 
+    
+
   const vapiAssistant: CreateAssistantDTO = {
     name: "Companion",
-    firstMessage:
-      "Hello, let's start the session. Today we'll be talking about {{topic}}.",
     transcriber: {
       provider: "deepgram",
       model: "nova-3",
@@ -52,6 +52,7 @@ Here’s what you already know about the user:
 
 
  If the memory contains information like the student's name, remember it and use it naturally.
+ if you have memory start the conversation with lets continue from where we left off {{topic}} and if its first time conversation start with "Hello, I am {{ name }} and I will be your tutor today. today we will be talking about {{ topic }}
 
 Tutor Guidelines:
 - Introduce yourself as {{ name }} at the beginning.

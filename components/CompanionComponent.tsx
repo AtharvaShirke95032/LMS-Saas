@@ -176,118 +176,171 @@ const CompanionComponent = ({
     //  console.log("storingEmbed finished");
   };
   return (
-    <section className="flex flex-col h-[70vh] bg-transparent">
-      <section className="flex gap-8 max-sm:flex-col">
-        <div>
-          
+  <section
+  // Main Container:
+  // - Using h-[80vh] for a taller viewport.
+  // - Added p-4 or p-6 for spacing.
+  // - Switched to a mobile-first 'flex-col' that becomes 'flex-row' on large screens.
+  className="flex flex-col lg:flex-row w-full h-[80vh] gap-6 p-4 text-white"
+>
+  {/* --- COLUMN 1: PARTICIPANTS & CONTROLS --- */}
+  <section
+    // This column holds the companion and user.
+    // Stacks vertically on mobile, goes side-by-side on tablet, and re-stacks
+    // vertically on large screens when next to the transcript.
+    className="flex flex-col sm:flex-row lg:flex-col gap-6 lg:w-full lg:max-w-xs"
+  >
+    {/* --- Companion Card --- */}
+    <div
+      // A "card" look with bg-neutral-800, rounded-2xl, and padding.
+      // 'flex-1' makes it share space equally with the user card on sm/md screens.
+      className="flex flex-col items-center justify-center gap-3 p-6 bg-neutral-800 rounded-2xl flex-1 shadow-lg"
+    >
+      <div
+        // Avatar container: relative, rounded-full, and shadow.
+        className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center rounded-full overflow-hidden shadow-xl"
+        style={{ backgroundColor: getSubjectColor(subject) }}
+      >
+        <div
+          className={cn(
+            "absolute transition-opacity duration-1000",
+            callStatus === CallStatus.FINISHED ||
+              callStatus === CallStatus.INACTIVE
+              ? "opacity-100"
+              : "opacity-0",
+            callStatus === CallStatus.CONNECTING && "opacity-100 animate-pulse"
+          )}
+        >
+          <Image
+            src={`/icons/${subject}.svg`}
+            alt={subject}
+            width={150}
+            height={150}
+            className="max-sm:w-fit"
+          />
         </div>
-        <div className="companion-section">
-          <div
-            className="companion-avatar"
-            style={{ backgroundColor: getSubjectColor(subject) }}
-          >
-            <div
-              className={cn(
-                "absolute transition-opacity duration-1000",
-                callStatus === CallStatus.FINISHED ||
-                  callStatus === CallStatus.INACTIVE
-                  ? "opacity-100"
-                  : "opacity-0",
-                callStatus === CallStatus.CONNECTING &&
-                  "opacity-100 animate-pulse"
-              )}
-            >
-              <Image
-                src={`/icons/${subject}.svg`}
-                alt={subject}
-                width={150}
-                height={150}
-                className="max-sm:w-fit"
-              />
-            </div>
-            <div
-              className={cn(
-                "absolute transition-opacity duration-1000 ",
-                callStatus === CallStatus.ACTIVE ? "opacity-100" : "opacity-0"
-              )}
-            >
-              <Lottie
-                lottieRef={lottieRef}
-                animationData={soundwaves}
-                autoPlay={false}
-                className="companion-lottie"
-              />
-            </div>
-          </div>
-          <p className="font-bold text-2xl text-white">{name}</p>
+        <div
+          className={cn(
+            "absolute transition-opacity duration-1000",
+            callStatus === CallStatus.ACTIVE ? "opacity-100" : "opacity-0"
+          )}
+        >
+          <Lottie
+            lottieRef={lottieRef}
+            animationData={soundwaves}
+            autoPlay={false}
+            // Scaled the Lottie to better fill the avatar circle
+            className="w-full h-full scale-150"
+          />
         </div>
-        <div className="user-section">
-          <div className="user-avatar">
-            <Image
-              src={userImage}
-              alt={userName}
-              width={130}
-              height={130}
-              className="rounded-lg"
-            />
-            <p className="font-bold text-white">{userName}</p>
-          </div>
-          <button
-            className="btn-mic"
-            onClick={toggleMicrophone}
-            disabled={callStatus !== CallStatus.ACTIVE}
-          >
-            <Image
-              src={isMuted ? "/icons/mic-off.svg" : "/icons/mic-on.svg"}
-              alt="mic"
-              width={36}
-              height={36}
-            />
-            <p className="max-sm:hidden text-white">
-              {isMuted ? "Turn on microphone" : "Turn off microphone"}
-            </p>
-          </button>
-          <button
-            className={cn(
-              "rounded-lg py-2 cursor-pointer transition-colors w-full text-white",
-              callStatus === CallStatus.ACTIVE ? "bg-red-700" : "bg-primary",
-              callStatus === CallStatus.CONNECTING && "animate-pulse"
-            )}
-            onClick={
-              callStatus === CallStatus.ACTIVE ? handleDisconnect : handleCall
-            }
-          >
-            {callStatus === CallStatus.ACTIVE
-              ? "End Session"
-              : callStatus === CallStatus.CONNECTING
-              ? "Connecting"
-              : "Start Session "}
-          </button>
-        </div>
-        <section className="transcript h-full">
-        <div className="transcript-message no-scrollbar">
-          {messages.map((message, index) => {
-            if (message.role === "assistant") {
-              return (
-                <p key={index} className="max-sm:text-sm text-white">
-                  {name.split(" ")[0].replace("/[.,]/g,", "")}:{message.content}
-                </p>
-              );
-            } else {
-              return (
-                <p key={index} className="text-white max-sm:text-sm ">
-                  {userName}:{message.content}
-                </p>
-              );
-            }
-          })}
-        </div>
-        <div className="transcript-fade" />
-      </section>
-      </section>
+      </div>
+      <p className="font-bold text-xl text-neutral-100 tracking-wide">{name}</p>
+    </div>
 
-      
-    </section>
+    {/* --- User Card & Controls --- */}
+    <div className="flex flex-col items-center justify-center gap-4 p-6 bg-neutral-800 rounded-2xl flex-1 shadow-lg">
+      {/* User Avatar */}
+      <div className="flex flex-col items-center gap-2">
+        <Image
+          src={userImage}
+          alt={userName}
+          width={130}
+          height={130}
+          // Avatars look better as 'rounded-full'
+          className="rounded-full w-24 h-24 md:w-32 md:h-32 border-2 border-neutral-600"
+        />
+        <p className="font-semibold text-lg text-neutral-100">{userName}</p>
+      </div>
+
+      {/* Mic Button */}
+      <button
+        // Styled as a proper button with hover/disabled states
+        className="flex items-center justify-center gap-2.5 rounded-lg px-4 py-2 w-full bg-neutral-700 hover:bg-neutral-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={toggleMicrophone}
+        disabled={callStatus !== CallStatus.ACTIVE}
+      >
+        <Image
+          src={isMuted ? "/icons/mic-off.svg" : "/icons/mic-on.svg"}
+          alt="mic"
+          width={28}
+          height={28}
+        />
+        <p className="max-sm:hidden text-white font-medium">
+          {isMuted ? "Turn on" : "Turn off"} microphone
+        </p>
+      </button>
+
+      {/* Call/End Button */}
+      <button
+        className={cn(
+          // Base button styles
+          "w-full rounded-lg py-3 px-5 font-semibold text-lg text-white transition-all duration-200 shadow-md",
+          "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-800",
+          // Logic-based styles
+          callStatus === CallStatus.ACTIVE
+            ? "bg-red-700 hover:bg-red-600 focus:ring-red-500"
+            : "bg-primary hover:opacity-90 focus:ring-primary", // Respects your 'bg-primary'
+          callStatus === CallStatus.CONNECTING &&
+            "animate-pulse bg-primary/70 cursor-not-allowed" // Dims 'bg-primary'
+        )}
+        onClick={
+          callStatus === CallStatus.ACTIVE ? handleDisconnect : handleCall
+        }
+      >
+        {callStatus === CallStatus.ACTIVE
+          ? "End Session"
+          : callStatus === CallStatus.CONNECTING
+          ? "Connecting..."
+          : "Start Session"}
+      </button>
+    </div>
+  </section>
+
+  {/* --- COLUMN 2: TRANSCRIPT --- */}
+  <section
+    // A card for the transcript. 'flex-col' to layout the list and the fade.
+    // 'overflow-hidden' is ESSENTIAL for the fade effect to work.
+    className="flex flex-col flex-1 h-full bg-neutral-800 rounded-2xl shadow-lg overflow-hidden"
+  >
+    <div
+      // This is the scrolling message list
+      // 'flex-1' makes it take all available space.
+      // 'overflow-y-auto' makes it scroll.
+      // 'no-scrollbar' is a custom utility you'll need (see note below).
+      className="flex-1 flex flex-col gap-4 p-6 overflow-y-auto no-scrollbar"
+    >
+      {messages.map((message, index) => {
+        if (message.role === "assistant") {
+          return (
+            <p key={index} className="max-sm:text-sm text-neutral-300 leading-relaxed">
+              <span className="font-medium text-neutral-100">
+                {name.split(" ")[0].replace("/[.,]/g,", "")}:
+              </span>{" "}
+              {message.content}
+            </p>
+          );
+        } else {
+          return (
+            <p key={index} className="text-white max-sm:text-sm leading-relaxed">
+              <span className="font-medium text-blue-300">
+                {userName}:
+              </span>{" "}
+              {message.content}
+            </p>
+          );
+        }
+      })}
+    </div>
+
+    {/* Transcript Fade Effect */}
+    <div
+      // This gradient overlays the bottom of the list, fading it out.
+      // '-mt-20' pulls it up. 'pointer-events-none' lets you click/scroll through it.
+      className="w-full h-20 bg-gradient-to-t from-neutral-800 to-transparent -mt-20 pointer-events-none"
+    />
+  </section>
+  
+</section>
   );
 };
 

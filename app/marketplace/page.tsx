@@ -1,8 +1,10 @@
 import MarketPlace from "@/components/marketplaceCard";
 import { getAllCompanions, getVoteScore } from "@/lib/actions/companion.actions";
+import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
 
 const page = async () => {
+  const user = await currentUser();
   const companions = await getAllCompanions({ limit: 20 });
   const voteScore =  await getVoteScore();
   
@@ -25,7 +27,7 @@ const page = async () => {
             // score = {voteScore[companion.id]}
             // score = {await getVoteScore(companion.id)}
             score = {voteScore[companion.id]}
-            authorName={companion.author}
+            authorName={user?.fullName ||companion.author}
           />
         ))}
       </section>

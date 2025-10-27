@@ -27,16 +27,25 @@ const page = async({params}:notesbabe) => {
 
   // console.log("dataaaaaaaaaaaaaaaaaaaaaaa",formatedData)
   return (
-    <div className='flex flex-col gap-7 items-center justify-center bg-neutral-900'>
-      {formattedData.map((note, index) => (
-      <div
-        key={index}
-        className="max-w-3xl w-full text-white bg-neutral-800 p-4 rounded-md whitespace-pre-line"
-      >
-        {note}
-      </div>
-    ))}
+  // Container: We'll use a darker background (like neutral-950 or black)
+// to make the notes pop. We'll also add more vertical padding.
+<div className='flex flex-col gap-7 items-center min-h-screen bg-neutral-950 py-12 px-4'>
+  {formattedData.map((note, index) => (
+    <div
+      key={index}
+      // Note Card:
+      // - bg-neutral-800: Slightly lighter card
+      // - shadow-lg shadow-blue-500/10: Adds depth and a subtle blue "glow"
+      // - border border-neutral-700: Defines the card edge
+      // - border-l-4 border-l-blue-500: The AI accent!
+      // - text-neutral-200: Softer white for easier reading
+      // - leading-relaxed: More space between lines
+      className="max-w-3xl w-full text-neutral-200 bg-neutral-800 p-5 rounded-lg shadow-lg shadow-blue-500/10 border border-neutral-700 border-l-4 border-l-blue-500 whitespace-pre-line leading-relaxed"
+    >
+      {note}
     </div>
+  ))}
+</div>
   )
 }
 

@@ -1,10 +1,9 @@
+import { motion } from "framer-motion";
 import CompanionCard from "@/components/CompanionCard";
 import CompanionsList from "@/components/CompanionsList";
-import CTA from "@/components/CTA";
+import { Cta } from "@/components/CTA";
 import LandingPage from "@/components/LandingPage";
 import MarketPlace from "@/components/marketplaceCard";
-import { Button } from "@/components/ui/button";
-import { recentSessions } from "@/constants";
 import {
   getAllCompanions,
   getRecentSessions,
@@ -12,58 +11,62 @@ import {
 } from "@/lib/actions/companion.actions";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-
-import { redirect } from "next/navigation";
 import React from "react";
 
 const Page = async () => {
   const user = await currentUser();
 
-  const companions = await getAllCompanions({ limit: 3 });
-  // const userId = companions.map((companion) => companion.author);
-  // console.log("userId", userId);
-  // console.log("companions:page",companions);
-   const voteScore =  await getVoteScore();
-    
+  // ✅ Fetch all companions (remove limit)
+  const companions = await getAllCompanions({});
+  const voteScore = await getVoteScore();
+  console.log("Vote scores:", voteScore);
+
+  // ✅ Sort by score descending
+  const sortedCompanions = [...companions].sort((a, b) => {
+    const scoreA = voteScore[a.id] ?? 0;
+    const scoreB = voteScore[b.id] ?? 0;
+    return scoreB - scoreA;
+  });
+
+  // ✅ Take top 3
+  const topCompanions = sortedCompanions.slice(0, 3);
+
   return (
-    <main className="bg-transparent ">
-     <SignedOut>
-      <LandingPage/>
-     </SignedOut>
+    <div className="bg-transparent">
+      <SignedOut>
+        <LandingPage />
+      </SignedOut>
 
-     <SignedIn>
+      <SignedIn>
+        <h1 className="text-3xl text-white pb-5">🚀 Top 3 Trending Buddies</h1>
 
-      
-        {/* Dashboard (shown when logged in) */}
-        <h1 className="text-3xl text-white">🚀 Trending Buddies</h1>
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-          {companions.map((companion) => (
+          {topCompanions.map((companion) => (
             <MarketPlace
               key={companion.id}
-              // notesId={}
               id={companion.id}
               name={companion.name}
               topic={companion.topic}
               subject={companion.subject}
               duration={companion.duration}
-              // authorName={`${user?.firstName ?? "Unknown"} ${user?.lastName ?? ""}`}
-              authorName={companion.author}
-              score = {voteScore[companion.id]}
+              authorName={user?.fullName || companion.author}
+              score={voteScore[companion.id] ?? 0}
             />
           ))}
         </section>
+
         {user && (
-          <section className="home-section">
+          <section className="home-section pt-5">
             <CompanionsList
-              title="🎯 Recently completed sessions "
+              title="🎯 Recently completed sessions"
               companions={await getRecentSessions(user.id, 10)}
               classNames="w-2/3 max-lg:w-full"
             />
-            <CTA />
+            <Cta />
           </section>
         )}
       </SignedIn>
-    </main>
+    </div>
   );
 };
 

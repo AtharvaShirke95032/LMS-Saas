@@ -27,13 +27,14 @@ export function NavbarDemo() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative w-full pt-10 ">
-      <Navbar className="fixed top-0 border-0 pt-10">
+    <div className="relative w-full p-5  ">
+      <Navbar className="fixed top-0 border-0 p-10">
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
+            
             <SignedOut>
               <SignInButton>
                 <NavbarButton
@@ -41,7 +42,7 @@ export function NavbarDemo() {
                   className="w-full"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Sign
+                  Sign In
                 </NavbarButton>
               </SignInButton>
             </SignedOut>

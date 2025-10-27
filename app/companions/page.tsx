@@ -28,6 +28,7 @@ const CompanionsLibrary = async ({searchParams}:SearchParams) => {
       {companions.length == 0 ? "create a companion to see" 
         :<section className='companions-grid'>
            {companions.map((companion)=>(
+            
           <CompanionCard
             key={companion.id}
             id={companion.id}

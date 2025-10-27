@@ -21,7 +21,7 @@ const Profile = async () => {
   const companions = await getUserCompanions(user.id);
   const SessionHistory = await getUserSessions(user.id);
   return (
-    <main className="min-lg:w-3/4 bg-transparent">
+    <main className=" bg-transparent w-full">
       <section className="flex justify-between gap-4 max-sm:flex-col items-center">
         <div className="flex gap-4 items-center">
           <Image 

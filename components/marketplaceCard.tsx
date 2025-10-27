@@ -3,7 +3,8 @@
 import { getSubjectColor } from "@/lib/utils";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { ArrowUp, ArrowDown } from "lucide-react";
+// Import PlusIcon
+import { ArrowUp, ArrowDown, PlusIcon } from "lucide-react";
 import { supbaseRealtime } from "@/lib/actions/companion.actions";
 
 interface CompanionCardProps {
@@ -18,8 +19,10 @@ interface CompanionCardProps {
 }
 
 type SCORELOGIC = number;
-
 type VoteLogic = true | false | null;
+
+// This component was in your original code but not used.
+// I'm leaving it here in case you need it.
 const TitleComponent = ({
   title,
   avatar,
@@ -55,27 +58,29 @@ const MarketPlace = ({
 }: CompanionCardProps) => {
   const [userVote, setUserVote] = useState<VoteLogic>(null);
   const [voteCount, setVoteCount] = useState<SCORELOGIC>(score ?? 0);
-//"str":"{}"
+
   useEffect(() => {
-  try {
-    const savedVote = localStorage.getItem(`vote_${id}`);
-    if (savedVote !== null) {
-      const parsedVote = JSON.parse(savedVote);
-      setUserVote(parsedVote);
+    try {
+      const savedVote = localStorage.getItem(`vote_${id}`);
+      if (savedVote !== null) {
+        const parsedVote = JSON.parse(savedVote);
+        setUserVote(parsedVote);
+      }
+    } catch (error) {
+      console.error("Error loading saved vote:", error);
     }
-  } catch (error) {
-    console.error('Error loading saved vote:', error);
-  }
-}, [id,authorName]);
-useEffect(() => {
-  try {
-    localStorage.setItem(`vote_${id}`, JSON.stringify(userVote));
-  } catch (error) {
-    console.error('Error saving vote:', error);
-  }
-}, [userVote, id,authorName]);
+  }, [id, authorName]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`vote_${id}`, JSON.stringify(userVote));
+    } catch (error) {
+      console.error("Error saving vote:", error);
+    }
+  }, [userVote, id, authorName]);
+
   const handleVote = async (vote: VoteLogic) => {
-    await supbaseRealtime();
+    // await supbaseRealtime(); // Assuming this is for realtime updates
     const newVote = userVote === vote ? null : vote;
     try {
       const res = await fetch("/api/votes", {
@@ -106,11 +111,44 @@ useEffect(() => {
     }
   };
 
-
   return (
-    <div className="relative flex flex-col rounded-4xl transition-transform duration-300 ease-in-out transform-gpu bg-black border-white shadow-[0_0_10px_15px_#000000] w-full justify-between ">
-      <div className="group relative h-full overflow-hidden rounded-2xl border-t border-white/10 bg-white/5 transition duration-200 hover:shadow-xl">
-        <div className="p-4 space-y-4">
+    <div
+      className="relative flex flex-col rounded-2xl transition-all duration-300 transform-gpu 
+      bg-neutral-950 border border-white/10 w-full justify-between h-80 overflow-hidden 
+      hover:scale-[1.01] 
+      
+      /* --- STYLES FROM CTA --- */
+      bg-[radial-gradient(35%_80%_at_25%_0%,--theme(--color-foreground/.08),transparent)]
+      shadow-lg shadow-[#93cf2f]/20 
+      hover:shadow-[#93cf2f]/30"
+    >
+      {/* --- STYLES FROM CTA: Corner Plus Icons --- */}
+      {/* Positioned inside the card padding for a cleaner look in a grid */}
+      <PlusIcon
+        className="absolute top-3 left-3 z-10 size-4 text-white/20"
+        strokeWidth={1}
+      />
+      <PlusIcon
+        className="absolute top-3 right-3 z-10 size-4 text-white/20"
+        strokeWidth={1}
+      />
+      <PlusIcon
+        className="absolute bottom-3 left-3 z-10 size-4 text-white/20"
+        strokeWidth={1}
+      />
+      <PlusIcon
+        className="absolute bottom-3 right-3 z-10 size-4 text-white/20"
+        strokeWidth={1}
+      />
+
+      {/* --- STYLES FROM CTA: Glow Effect --- */}
+      {/* Scaled down to fit the card */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-20 w-[60%] bg-[#93cf2f]/10 blur-xl rounded-full pointer-events-none z-0" />
+
+      {/* Main Content Area (Added z-10) */}
+      <div className="flex-1 p-4 space-y-4 flex flex-col justify-between z-10">
+        {/* Top Section: Badges */}
+        <div>
           <div className="flex justify-between items-center">
             <div
               className="subject-badge text-xs font-bold uppercase px-2 py-1 rounded"
@@ -126,59 +164,66 @@ useEffect(() => {
                 width={13.5}
                 height={13.5}
               />
-              {duration} minutes
+              {/* {duration} minutes */}
             </div>
           </div>
 
-          <h2 className="text-xl font-bold text-white">{name}</h2>
-          <div className="flex justify-between items-center">
-            <div className="flex flex-col gap-2">
-              <p
-                className="text-sm text-white border border-white/20 rounded-xl w-fit px-3 py-1
-             truncate 
-             max-w-[120px]          /* default for very small screens */
-             sm:max-w-[280px]       /* small screens */
-             md:max-w-[380px]       /* tablets/small desktops */
-             lg:max-w-[180px]" /* large desktops */
-              >
-                {topic}
-              </p>
-              <p className="overflow-x-hidden w-20 text-sm font-light">
-                {authorName}
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-white">
-              <button
-                onClick={() => handleVote(true)}
-                className={`p-1 hover:text-orange-500 ${
-                  userVote === true ? "text-orange-500" : ""
-                }`}
-              >
-                <div className="border rounded-sm">
-                  <ArrowUp size={20} />
-                </div>
-              </button>
+          {/* Title - Clamped to 2 lines */}
+          <h2 className="mt-4 text-xl font-bold text-white h-14 leading-tight line-clamp-2">
+            {name}
+          </h2>
+        </div>
 
-              <span className="text-sm font-bold">{voteCount} </span>
-
-              <button
-                onClick={() => handleVote(false)}
-                className={`p-1 hover:text-blue-500 ${
-                  userVote === false ? "text-blue-500" : ""
-                }`}
-              >
-                <div className="border rounded-sm">
-                  <ArrowDown size={20} />
-                </div>
-              </button>
-            </div>
+        {/* Bottom Section: Topic & Votes */}
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col gap-2 overflow-hidden">
+            {/* Topic - Truncated */}
+            <p
+              className="text-sm text-white border border-white/20 rounded-xl w-fit px-3 py-1
+             truncate max-w-full"
+            >
+              {topic}
+            </p>
+            {/* Author - Truncated */}
+            <p className="text-md font-light text-neutral-400 truncate">
+              Owner:{authorName}
+            </p>
           </div>
 
-          {/* <p className="text-white text-xs">by {authorName}</p> */}
+          {/* Vote Controls */}
+          <div className="flex flex-col items-center text-white flex-shrink-0 ml-2">
+            <button
+              onClick={() => handleVote(true)}
+              className={`p-1 hover:text-orange-500 transition-colors ${
+                userVote === true ? "text-orange-500" : ""
+              }`}
+            >
+              <div className="border border-white/20 rounded-md p-0.5">
+                <ArrowUp size={20} />
+              </div>
+            </button>
+
+            <span className="text-sm font-bold w-8 text-center">
+              {voteCount}
+            </span>
+
+            <button
+              onClick={() => handleVote(false)}
+              className={`p-1 hover:text-blue-500 transition-colors ${
+                userVote === false ? "text-blue-500" : ""
+              }`}
+            >
+              <div className="border border-white/20 rounded-md p-0.5">
+                <ArrowDown size={20} />
+              </div>
+            </button>
+          </div>
         </div>
       </div>
-      <div className="border-b-1  border-white/10 p-4 rounded-2xl ">
-        <p>desctiption</p>
+
+      {/* Footer Area (Added z-10) */}
+      <div className="border-t border-white/10 p-4 bg-black/30 backdrop-blur-sm z-10">
+        <p className="text-sm text-neutral-300">Description...</p>
       </div>
     </div>
   );

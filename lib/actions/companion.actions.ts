@@ -1,10 +1,11 @@
 "use server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 
 
 export const createCompanion = async (FormData: CreateCompanion) => {
   const { userId: author } = await auth();
+  const user = await currentUser()
   const supabase = createSupabaseClient();
 
   const { data, error } = await supabase
@@ -234,32 +235,27 @@ export const storingEmbed = async (
 //   const{data,error} = await supabase.from("notes").select("notesContent").eq("companion_id",companionId); 
 // }
 
-export async function getVoteScore(){
+export async function getVoteScore() {
   const supabase = createSupabaseClient();
   const { data, error } = await supabase
     .from("votes")
-    .select("companion_id,vote_type")
-    
-    if (error) {
-      console.error("Error fetching vote scores:", error.message);
-    }
+    .select("companion_id, vote_type");
 
-
-  // console.log("data:",data)
-
- const scores: Record<string, number> = {};
-    
-  data?.forEach(({ companion_id, vote_type }) => {
-  if (!scores[companion_id]) scores[companion_id] = 0;
-  
-  if (vote_type === true) {
-    scores[companion_id] += 1;
-  } else if (vote_type === false) {
-    scores[companion_id] -= 1;
+  if (error) {
+    console.error("Error fetching vote scores:", error.message);
+    return {}; // ✅ Return empty object safely
   }
-});
-// console.log(scores["2e6eb35e-5310-4f95-a0a5-1d2227560591"])
-return scores;
+
+  const scores: Record<string, number> = {};
+
+  data?.forEach(({ companion_id, vote_type }) => {
+    if (!scores[companion_id]) scores[companion_id] = 0;
+    if (vote_type === true) scores[companion_id] += 1;
+    else if (vote_type === false) scores[companion_id] -= 1;
+  });
+
+  console.log("Vote scores computed:", scores);
+  return scores;
 }
 
 export async function supbaseRealtime(){

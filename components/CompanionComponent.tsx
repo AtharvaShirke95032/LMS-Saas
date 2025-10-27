@@ -161,7 +161,6 @@ const CompanionComponent = ({
     });
     const data = await res.json();
     const embedding = data.embedding;
-    // console.log("embedded",embedding)
     await storingEmbed(combinedText, companionId, embedding);
     //fetch notes
 
@@ -179,6 +178,9 @@ const CompanionComponent = ({
   return (
     <section className="flex flex-col h-[70vh] bg-transparent">
       <section className="flex gap-8 max-sm:flex-col">
+        <div>
+          
+        </div>
         <div className="companion-section">
           <div
             className="companion-avatar"
@@ -262,9 +264,7 @@ const CompanionComponent = ({
               : "Start Session "}
           </button>
         </div>
-      </section>
-
-      <section className="transcript">
+        <section className="transcript h-full">
         <div className="transcript-message no-scrollbar">
           {messages.map((message, index) => {
             if (message.role === "assistant") {
@@ -284,6 +284,9 @@ const CompanionComponent = ({
         </div>
         <div className="transcript-fade" />
       </section>
+      </section>
+
+      
     </section>
   );
 };

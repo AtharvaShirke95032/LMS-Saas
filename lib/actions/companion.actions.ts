@@ -39,7 +39,6 @@ export const getAllCompanions = async ({
   query = query.range((page - 1) * limit, page * limit - 1);
   const { data: companions, error } = await query;
   if (error) throw new Error(error.message);
-  // console.log("companions:",companions)
   return companions;
 };
 

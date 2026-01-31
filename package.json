@@ -21,7 +21,6 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.4.0",
-    "@sentry/nextjs": "^9.43.0",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.10.39",
     "@supabase/ssr": "^0.8.0",

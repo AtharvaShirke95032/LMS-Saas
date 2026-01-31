@@ -79,14 +79,14 @@ const CompanionForm = () => {
   <form onSubmit={form.handleSubmit(onSubmit)}>
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl">Build Your Companion</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-xl sm:text-2xl">Build Your Companion</CardTitle>
+        <CardDescription className="text-sm sm:text-base">
           Fill out the details below to create your personalized learning partner.
         </CardDescription>
       </CardHeader>
       <CardContent>
         {/* We use a responsive grid for the form fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {/* Companion Name */}
           <FormField
             control={form.control}

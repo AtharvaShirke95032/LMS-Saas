@@ -29,71 +29,100 @@ const CompanionsList = ({
   // console.log("filetered:",filtered);
   return (
     <article className={cn("companion-list shadow-[0_0_10px_15px_#000000]", classNames)}>
-      <h2 className="font-bold text-3xl text-white">{title}</h2>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-lg w-2/3 text-white">Lessons</TableHead>
-            <TableHead className="text-lg text-white">Subject</TableHead>
-            <TableHead className="text-lg text-right text-white">Duration</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filtered?.map(({ id, subject, name, topic, duration,created_at}) => (
-            
-            <TableRow key={created_at}>
-             
-              <TableCell>
-                
-                <Link href={`/companions/${id}`}>
-                
-                  <div className="flex items-center gap-2">
-                    
-                    <div className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden" style={{ backgroundColor: getSubjectColor(subject) }}>
-                      <Image 
+      <h2 className="font-bold text-xl sm:text-2xl lg:text-3xl text-white mb-4 sm:mb-6">{title}</h2>
+      {/* Desktop Table View */}
+      <div className="hidden md:block">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-lg w-2/3 text-white">Lessons</TableHead>
+              <TableHead className="text-lg text-center text-white">Subject</TableHead>
+              <TableHead className="text-lg text-right text-white">Duration</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered?.map(({ id, subject, name, topic, duration,created_at}) => (
+              <TableRow key={created_at}>
+                <TableCell className="align-middle">
+                  <Link href={`/companions/${id}`} prefetch={true}>
+                    <div className="flex items-center gap-2">
+                      <div className="size-[72px] flex items-center justify-center rounded-lg flex-shrink-0" style={{ backgroundColor: getSubjectColor(subject) }}>
+                        <Image 
+                          src={`/icons/${subject}.svg`}
+                          alt={subject}
+                          width={35}
+                          height={35}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <p className="font-bold text-xl lg:text-2xl text-white">
+                          {name}
+                        </p>
+                        <p className="text-base lg:text-lg text-white">
+                          {topic}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                </TableCell>
+                <TableCell className="text-center align-middle">
+                  <div className="subject-badge w-fit mx-auto">
+                    {subject}
+                  </div>
+                </TableCell>
+                <TableCell className="text-right align-middle">
+                  <div className="flex items-center gap-2 justify-end">
+                    <p className="text-xl lg:text-2xl text-white">
+                      {duration} mins
+                    </p>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
+        {filtered?.map(({ id, subject, name, topic, duration, created_at}) => (
+          <Link key={created_at} href={`/companions/${id}`} prefetch={true}>
+            <div className="bg-neutral-900/50 border border-white/10 rounded-xl p-4 space-y-3 hover:bg-neutral-800/50 transition-colors">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="size-12 sm:size-14 flex items-center justify-center rounded-lg flex-shrink-0" style={{ backgroundColor: getSubjectColor(subject) }}>
+                    <Image 
                       src={`/icons/${subject}.svg`}
                       alt={subject}
-                      width={35}
-                      height={35}
+                      width={24}
+                      height={24}
                     />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <p className="font-bold text-2xl text-white">
-                        {name}
-                      </p>
-                      <p className="text-lg text-white">
-                        {topic}
-                      </p>
-                    </div>
                   </div>
-                </Link>
-              </TableCell>
-              <TableCell>
-                <div className="subject-badge w-fit max-md:hidden">
+                  <div className="flex flex-col gap-1 flex-1 min-w-0">
+                    <p className="font-bold text-lg text-white truncate">
+                      {name}
+                    </p>
+                    <p className="text-sm text-white/80 line-clamp-2">
+                      {topic}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <Image src="/icons/clock.svg" alt="minutes" width={14} height={14} />
+                  <p className="text-base text-white">
+                    {duration}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                <div className="subject-badge text-xs">
                   {subject}
                 </div>
-                <div className="flex items-center justify-center rounded-lg w-fit p-2 md:hidden" >
-                  <Image src={`/icons/${subject}.svg`}
-                  alt={subject}
-                  width={18}
-                  height={18}
-                  />
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2 w-full">
-                  <p className="text-2xl text-white">
-                    {duration}{' '}
-                    <span className="max-md:hidden">mins</span>
-                  </p>
-                  <Image src="/icons/clock.svg" alt="minutes" width={14} height={14} className="md:hidden"/>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-    
-        </TableBody>
-      </Table>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </article>
   );
 };

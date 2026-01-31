@@ -44,7 +44,7 @@ export default function RootLayout({
       </div> */}
 
       {/* Main content */}
-      <div className="w-full bg-transparent pt-20 px-20">{children}</div>
+      <div className="w-full bg-transparent pt-20 px-4 sm:px-8 lg:px-20 flex items-center justify-center">{children}</div>
     </body>
   </html>
 </ClerkProvider>

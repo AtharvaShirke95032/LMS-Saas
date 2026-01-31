@@ -38,9 +38,9 @@ const Page = async () => {
       </SignedOut>
 
       <SignedIn>
-        <h1 className="text-3xl text-white pb-5">🚀 Top 3 Trending Buddies</h1>
+        <h1 className="text-2xl sm:text-3xl text-white pb-4 sm:pb-5">🚀 Top 3 Trending Buddies</h1>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 w-full justify-items-center lg:justify-items-stretch">
           {topCompanions.map((companion) => (
             <MarketPlace
               key={companion.id}

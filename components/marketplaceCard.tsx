@@ -114,7 +114,7 @@ const MarketPlace = ({
   return (
     <div
       className="relative flex flex-col rounded-2xl transition-all duration-300 transform-gpu 
-      bg-neutral-950 border border-white/10 w-full justify-between h-80 overflow-hidden 
+      bg-neutral-950 border border-white/10 w-full lg:w-full justify-between h-auto min-h-[320px] sm:h-80 overflow-hidden 
       hover:scale-[1.01] 
       
       /* --- STYLES FROM CTA --- */
@@ -169,24 +169,21 @@ const MarketPlace = ({
           </div>
 
           {/* Title - Clamped to 2 lines */}
-          <h2 className="mt-4 text-xl font-bold text-white h-14 leading-tight line-clamp-2">
+          <h2 className="mt-4 text-lg sm:text-xl font-bold text-white min-h-[3.5rem] sm:h-14 leading-tight line-clamp-2">
             {name}
           </h2>
         </div>
 
         {/* Bottom Section: Topic & Votes */}
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col gap-2 overflow-hidden">
+        <div className="flex justify-between items-start sm:items-center gap-2 sm:gap-0">
+          <div className="flex flex-col gap-1.5 sm:gap-2 overflow-hidden flex-1 min-w-0">
             {/* Topic - Truncated */}
-            <p
-              className="text-sm text-white border border-white/20 rounded-xl w-fit px-3 py-1
-             truncate max-w-full"
-            >
+            <p className="text-xs sm:text-sm text-white border border-white/20 rounded-xl w-fit px-2 sm:px-3 py-1 truncate max-w-full">
               {topic}
             </p>
             {/* Author - Truncated */}
-            <p className="text-md font-light text-neutral-400 truncate">
-              Owner:{authorName}
+            <p className="text-xs sm:text-sm font-light text-neutral-400 truncate">
+              Owner: {authorName}
             </p>
           </div>
 
@@ -222,8 +219,8 @@ const MarketPlace = ({
       </div>
 
       {/* Footer Area (Added z-10) */}
-      <div className="border-t border-white/10 p-4 bg-black/30 backdrop-blur-sm z-10">
-        <p className="text-sm text-neutral-300">Description...</p>
+      <div className="border-t border-white/10 p-3 sm:p-4 bg-black/30 backdrop-blur-sm z-10">
+        <p className="text-xs sm:text-sm text-neutral-300">Description...</p>
       </div>
     </div>
   );

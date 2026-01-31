@@ -20,26 +20,26 @@ const ComapionSession = async ({params}:companionSessionPageProps) => {
 
   if(!name) redirect("/companions")
   return (
-    <main className='bg-transparent '>
-<div className="bg-neutral-900/50 backdrop-blur-sm border border-white/10 rounded-2xl p-20 shadow-lg">       
- <article className='flex rounded-border border-white justify-between p-6 max-md:flex-col mb-20'>
-        <div className='flex items-center gap-2'>
-          <div className='size-[72px] flex items-center justify-center rounded-lg max-md:hidden' style={{backgroundColor:getSubjectColor(subject)}}>
-            <Image src={`/icons/${subject}.svg`} alt={subject} width={35} height={35} />
+    <main className='bg-transparent'>
+<div className="bg-neutral-900/50 backdrop-blur-sm border border-white/10 rounded-2xl p-4 sm:p-8 lg:p-20 shadow-lg">       
+ <article className='flex rounded-border border-white justify-between p-4 sm:p-6 flex-col sm:flex-row gap-4 sm:gap-0 mb-8 sm:mb-12 lg:mb-20'>
+        <div className='flex items-center gap-2 sm:gap-3'>
+          <div className='size-12 sm:size-16 md:size-[72px] flex items-center justify-center rounded-lg' style={{backgroundColor:getSubjectColor(subject)}}>
+            <Image src={`/icons/${subject}.svg`} alt={subject} width={35} height={35} className="w-6 h-6 sm:w-8 sm:h-8 md:w-[35px] md:h-[35px]" />
           </div>
-          <div className='flex flex-col gap-2'>
-            <div className='flex items-center gap-2 '>
-              <p className='font-bold text-2xl text-white'>
+          <div className='flex flex-col gap-1 sm:gap-2 flex-1 min-w-0'>
+            <div className='flex items-center gap-2 flex-wrap'>
+              <p className='font-bold text-lg sm:text-xl lg:text-2xl text-white'>
                  {name}
               </p>
-              <div className='subject-badge max-sm:hidden text-white'>
+              <div className='subject-badge text-xs sm:text-sm text-white'>
                 {subject}
               </div>
             </div>
-            <p className='text-lg text-white'> {topic}</p>
+            <p className='text-sm sm:text-base lg:text-lg text-white truncate sm:line-clamp-2'> {topic}</p>
           </div>
         </div>
-        <div className='items-start text-2xl max-md:hidden text-white'>{duration} minutes</div>
+        <div className='flex items-center sm:items-start text-lg sm:text-xl lg:text-2xl text-white'>{duration} minutes</div>
         </article>
         
         <CompanionComponent

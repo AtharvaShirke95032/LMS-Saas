@@ -18,9 +18,9 @@ const CompanionsLibrary = async ({searchParams}:SearchParams) => {
   
   return (
     <main className='bg-transparent'>
-      <section className='flex justify-between gap-4 max-sm:flex-col'>
-        <h1 className='text-white'> 🧠 Companion Library </h1>
-        <div className='flex gap-4'>
+      <section className='flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center'>
+        <h1 className='text-xl sm:text-2xl lg:text-3xl text-white'> 🧠 Companion Library </h1>
+        <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto'>
           <SearchInput/>
           <SubjectFilter/>
         </div>

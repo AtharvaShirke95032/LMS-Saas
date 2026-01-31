@@ -13,6 +13,7 @@ import {
 } from "@/components/aceternity/resizable-navbar";
 import { useState } from "react";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 export function NavbarDemo() {
   const navItems = [
@@ -27,8 +28,8 @@ export function NavbarDemo() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative w-full p-5  ">
-      <Navbar className="fixed top-0 border-0 p-10">
+    <div className="relative w-full p-2 sm:p-4 lg:p-5">
+      <Navbar className="fixed top-0 border-0 p-4 sm:p-6 lg:p-10">
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
@@ -77,14 +78,15 @@ export function NavbarDemo() {
             onClose={() => setIsMobileMenuOpen(false)}
           >
             {navItems.map((item, idx) => (
-              <a
+              <Link
                 key={`mobile-link-${idx}`}
                 href={item.href}
+                prefetch={true}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="relative text-neutral-600 dark:text-neutral-300"
               >
                 <span className="block">{item.name}</span>
-              </a>
+              </Link>
             ))}
             <div className="flex w-full flex-col gap-4 mt-4">
               <SignedOut>

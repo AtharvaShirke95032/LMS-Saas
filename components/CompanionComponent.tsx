@@ -181,7 +181,7 @@ const CompanionComponent = ({
   // - Using h-[80vh] for a taller viewport.
   // - Added p-4 or p-6 for spacing.
   // - Switched to a mobile-first 'flex-col' that becomes 'flex-row' on large screens.
-  className="flex flex-col lg:flex-row w-full h-[80vh] gap-6 p-4 text-white"
+  className="flex flex-col lg:flex-row w-full h-auto min-h-[70vh] lg:h-[80vh] gap-4 sm:gap-6 p-3 sm:p-4 lg:p-6 text-white"
 >
   {/* --- COLUMN 1: PARTICIPANTS & CONTROLS --- */}
   <section
@@ -198,7 +198,7 @@ const CompanionComponent = ({
     >
       <div
         // Avatar container: relative, rounded-full, and shadow.
-        className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center rounded-full overflow-hidden shadow-xl"
+        className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center rounded-full overflow-hidden shadow-xl"
         style={{ backgroundColor: getSubjectColor(subject) }}
       >
         <div
@@ -216,7 +216,7 @@ const CompanionComponent = ({
             alt={subject}
             width={150}
             height={150}
-            className="max-sm:w-fit"
+            className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
           />
         </div>
         <div
@@ -234,7 +234,7 @@ const CompanionComponent = ({
           />
         </div>
       </div>
-      <p className="font-bold text-xl text-neutral-100 tracking-wide">{name}</p>
+      <p className="font-bold text-lg sm:text-xl text-neutral-100 tracking-wide text-center px-2">{name}</p>
     </div>
 
     {/* --- User Card & Controls --- */}
@@ -247,9 +247,9 @@ const CompanionComponent = ({
           width={130}
           height={130}
           // Avatars look better as 'rounded-full'
-          className="rounded-full w-24 h-24 md:w-32 md:h-32 border-2 border-neutral-600"
+          className="rounded-full w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 border-2 border-neutral-600"
         />
-        <p className="font-semibold text-lg text-neutral-100">{userName}</p>
+        <p className="font-semibold text-base sm:text-lg text-neutral-100 text-center px-2">{userName}</p>
       </div>
 
       {/* Mic Button */}
@@ -265,7 +265,7 @@ const CompanionComponent = ({
           width={28}
           height={28}
         />
-        <p className="max-sm:hidden text-white font-medium">
+        <p className="hidden sm:block text-white font-medium text-sm sm:text-base">
           {isMuted ? "Turn on" : "Turn off"} microphone
         </p>
       </button>
@@ -274,7 +274,7 @@ const CompanionComponent = ({
       <button
         className={cn(
           // Base button styles
-          "w-full rounded-lg py-3 px-5 font-semibold text-lg text-white transition-all duration-200 shadow-md",
+          "w-full rounded-lg py-2.5 sm:py-3 px-4 sm:px-5 font-semibold text-base sm:text-lg text-white transition-all duration-200 shadow-md",
           "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-800",
           // Logic-based styles
           callStatus === CallStatus.ACTIVE
@@ -307,12 +307,12 @@ const CompanionComponent = ({
       // 'flex-1' makes it take all available space.
       // 'overflow-y-auto' makes it scroll.
       // 'no-scrollbar' is a custom utility you'll need (see note below).
-      className="flex-1 flex flex-col gap-4 p-6 overflow-y-auto no-scrollbar"
+      className="flex-1 flex flex-col gap-3 sm:gap-4 p-4 sm:p-6 overflow-y-auto no-scrollbar"
     >
       {messages.map((message, index) => {
         if (message.role === "assistant") {
           return (
-            <p key={index} className="max-sm:text-sm text-neutral-300 leading-relaxed">
+            <p key={index} className="text-sm sm:text-base text-neutral-300 leading-relaxed">
               <span className="font-medium text-neutral-100">
                 {name.split(" ")[0].replace("/[.,]/g,", "")}:
               </span>{" "}
@@ -321,7 +321,7 @@ const CompanionComponent = ({
           );
         } else {
           return (
-            <p key={index} className="text-white max-sm:text-sm leading-relaxed">
+            <p key={index} className="text-sm sm:text-base text-white leading-relaxed">
               <span className="font-medium text-blue-300">
                 {userName}:
               </span>{" "}

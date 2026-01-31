@@ -4,7 +4,6 @@ import { dark } from "@clerk/themes";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NavbarDemo } from "@/components/Navbar";
-import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

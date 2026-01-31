@@ -20,9 +20,6 @@ const page = async({params}:notesbabe) => {
   const supabase = createSupabaseClient()
   const {data,error} = await supabase.from("notes").select("notesContent").eq("companion_id",id);
   if(!data || error) throw new Error(error.message)
-  const formatedData = data.map((note)=>(
-    formatDatabaseNotes(note.notesContent)
-  ))
   const formattedData = data.map((note) => formatDatabaseNotes(note.notesContent));
 
   // console.log("dataaaaaaaaaaaaaaaaaaaaaaa",formatedData)

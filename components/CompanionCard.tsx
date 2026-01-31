@@ -4,11 +4,6 @@ import { getSubjectColor } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FollowerPointerCard } from "@/components/aceternity/following-pointer";
-
-// Assuming AuroraBackground is in this file or imported if you want it *inside* the card
-// import { AuroraBackground } from "@/components/aceternity/aurora-background";
-
 interface CompanionCardProps {
   id: string;
   name: string;
@@ -19,35 +14,11 @@ interface CompanionCardProps {
   authorAvatar?: string;
 }
 
-const TitleComponent = ({
-  title,
-  avatar,
-}: {
-  title?: string;
-  avatar?: string;
-}) => (
-  <div className="flex items-center space-x-2">
-    {avatar && (
-      <img
-        src={avatar}
-        height="20"
-        width="20"
-        alt="avatar"
-        className="rounded-full border-2 border-white"
-      />
-    )}
-    <p>{title}</p>
-  </div>
-);
-
 const CompanionCard = ({
   id,
   name,
   topic,
   subject,
-  duration,
-  authorName,
-  authorAvatar,
 }: CompanionCardProps) => {
   return (
     <div className="relative companion-card">

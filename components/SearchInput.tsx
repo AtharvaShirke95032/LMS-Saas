@@ -3,17 +3,16 @@ import { formUrlQuery, removeKeysFromUrlQuery } from "@jsmastery/utils";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const SearchInput = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const query = searchParams.get("topic") || "";
 
   const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
-    const delayfn = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (searchQuery) {
         const newUrl = formUrlQuery({
           params: searchParams.toString(),
@@ -31,6 +30,7 @@ const SearchInput = () => {
         }
       }
     }, 500);
+    return () => clearTimeout(timeoutId);
   }, [searchQuery, router, searchParams, pathname]);
   return (
     <div className="relative border border-white rounded-lg items-center flex gap-2 px-2 sm:px-3 py-1.5 sm:py-2 h-fit w-full sm:w-auto min-w-[200px]">

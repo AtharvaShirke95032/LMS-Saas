@@ -3,7 +3,6 @@ import { Cover } from "./ui/cover";
 import { BackgroundRippleEffect } from "./ui/background-ripple-effect";
 import { HowItWorks } from "./ui/how-it-works";
 import { Features } from "./blocks/features-8";
-import { DotScreenShader } from "./ui/dot-shader-background";
 
 const LandingPage = () => {
   return (

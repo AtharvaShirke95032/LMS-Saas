@@ -1,7 +1,7 @@
 import CompanionCard from '@/components/CompanionCard';
 import SearchInput from '@/components/SearchInput';
 import SubjectFilter from '@/components/SubjectFilter';
-import { filterComponents, getAllCompanions, getUserCompanions } from '@/lib/actions/companion.actions';
+import { filterComponents } from '@/lib/actions/companion.actions';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react'

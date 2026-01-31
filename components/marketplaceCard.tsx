@@ -5,7 +5,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 // Import PlusIcon
 import { ArrowUp, ArrowDown, PlusIcon } from "lucide-react";
-import { supbaseRealtime } from "@/lib/actions/companion.actions";
 
 interface CompanionCardProps {
   id: string;
@@ -21,38 +20,11 @@ interface CompanionCardProps {
 type SCORELOGIC = number;
 type VoteLogic = true | false | null;
 
-// This component was in your original code but not used.
-// I'm leaving it here in case you need it.
-const TitleComponent = ({
-  title,
-  avatar,
-  subject,
-}: {
-  title?: string;
-  avatar?: string;
-  subject?: string;
-}) => (
-  <div className="flex items-center space-x-2">
-    {avatar && (
-      <img
-        src={avatar}
-        height="20"
-        width="20"
-        alt="avatar"
-        className="rounded-full border-2 border-white"
-      />
-    )}
-    <p>{title}</p>
-  </div>
-);
-
 const MarketPlace = ({
   name,
   topic,
   subject,
-  duration,
   authorName,
-  authorAvatar,
   id,
   score,
 }: CompanionCardProps) => {

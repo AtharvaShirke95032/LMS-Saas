@@ -285,7 +285,7 @@ export const NavbarButton = ({
     children?: React.ReactNode;
     href?: string;
     className?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   }>;
 
   return (

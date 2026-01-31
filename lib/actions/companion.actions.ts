@@ -5,7 +5,6 @@ import { createSupabaseClient } from "../supabase";
 
 export const createCompanion = async (FormData: CreateCompanion) => {
   const { userId: author } = await auth();
-  const user = await currentUser()
   const supabase = createSupabaseClient();
 
   const { data, error } = await supabase
@@ -260,7 +259,7 @@ export async function getVoteScore() {
 
 export async function supbaseRealtime(){
   const supabase = createSupabaseClient()
-  const allChanges = supabase
+  supabase
   .channel('Votes-Changes')
   .on(
     'postgres_changes',

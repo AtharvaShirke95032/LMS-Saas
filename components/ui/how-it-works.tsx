@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Brain, MessageSquare, BookText } from "lucide-react";
 import type React from "react";
 
-interface HowItWorksProps extends React.HTMLAttributes<HTMLElement> {}
+type HowItWorksProps = React.HTMLAttributes<HTMLElement>;
 
 interface StepCardProps {
   icon: React.ReactNode;

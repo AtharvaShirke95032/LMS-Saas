@@ -13,8 +13,7 @@ export const getSubjectColor = (subject: string) => {
 
 export const configureAssistant = (
   voice: string,
-  style: string,
-  memory: string = ""
+  style: string
 ) => {
   const voiceId =
     voices[voice as keyof typeof voices][
@@ -68,9 +67,9 @@ Tutor Guidelines:
 
       ],
     },
-    //@ts-expect-error
+    //@ts-expect-error - VAPI SDK types are incomplete, these properties are valid
     clientMessages: [],
-    //@ts-expect-error
+    //@ts-expect-error - VAPI SDK types are incomplete, these properties are valid
     serverMessages: [],
   };
 

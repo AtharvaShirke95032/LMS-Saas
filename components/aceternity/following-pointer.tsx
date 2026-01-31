@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import { motion, AnimatePresence, useMotionValue } from "motion/react";
+import { motion, AnimatePresence, useMotionValue, MotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 import { subjectsColors } from "@/constants";
 type SubjectType = keyof typeof subjectsColors;
@@ -68,8 +68,8 @@ export const FollowPointer = ({
   title,
   subject
 }: {
-  x: number;
-  y: number;
+  x: MotionValue<number>;
+  y: MotionValue<number>;
   title?: string | React.ReactNode;
   subject:string
 }) => {

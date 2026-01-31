@@ -250,14 +250,7 @@ export const NavbarLogo = () => {
   );
 };
 
-export const NavbarButton = ({
-  href,
-  as: Tag = "a",
-  children,
-  className,
-  variant = "primary",
-  ...props
-}: {
+type NavbarButtonProps = {
   href?: string;
   as?: React.ElementType;
   children: React.ReactNode;
@@ -266,7 +259,16 @@ export const NavbarButton = ({
 } & (
   | React.ComponentPropsWithoutRef<"a">
   | React.ComponentPropsWithoutRef<"button">
-)) => {
+);
+
+export const NavbarButton = ({
+  href,
+  as: Tag = "a",
+  children,
+  className,
+  variant = "primary",
+  ...props
+}: NavbarButtonProps) => {
   const baseStyles =
     "px-4 py-2 rounded-full bg-white button bg-white text-black text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
 
@@ -279,13 +281,20 @@ export const NavbarButton = ({
       "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
   };
 
+  const Component = Tag as React.ElementType<{
+    children?: React.ReactNode;
+    href?: string;
+    className?: string;
+    [key: string]: any;
+  }>;
+
   return (
-    <Tag
+    <Component
       href={href || undefined}
       className={cn(baseStyles, variantStyles[variant], className)}
       {...props}
     >
       {children}
-    </Tag>
+    </Component>
   );
 };

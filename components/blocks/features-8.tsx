@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Shield, Users } from 'lucide-react'
+import Image from 'next/image'
 
 export function Features() {
     return (
@@ -170,19 +171,19 @@ export function Features() {
                                         <div className="relative flex w-[calc(50%+0.875rem)] items-center justify-end gap-2">
                                             <span className="block h-fit rounded border px-2 py-1 text-xs shadow-sm">Likeur</span>
                                             <div className="ring-background size-7 ring-4">
-                                                <img className="size-full rounded-full" src="https://avatars.githubusercontent.com/u/102558960?v=4" alt="" />
+                                                <Image className="size-full rounded-full" src="https://avatars.githubusercontent.com/u/102558960?v=4" alt="Likeur" width={28} height={28} unoptimized />
                                             </div>
                                         </div>
                                         <div className="relative ml-[calc(50%-1rem)] flex items-center gap-2">
                                             <div className="ring-background size-8 ring-4">
-                                                <img className="size-full rounded-full" src="https://avatars.githubusercontent.com/u/47919550?v=4" alt="" />
+                                                <Image className="size-full rounded-full" src="https://avatars.githubusercontent.com/u/47919550?v=4" alt="M. Irung" width={32} height={32} unoptimized />
                                             </div>
                                             <span className="block h-fit rounded border px-2 py-1 text-xs shadow-sm">M. Irung</span>
                                         </div>
                                         <div className="relative flex w-[calc(50%+0.875rem)] items-center justify-end gap-2">
                                             <span className="block h-fit rounded border px-2 py-1 text-xs shadow-sm">B. Ng</span>
                                             <div className="ring-background size-7 ring-4">
-                                                <img className="size-full rounded-full" src="https://avatars.githubusercontent.com/u/31113941?v=4" alt="" />
+                                                <Image className="size-full rounded-full" src="https://avatars.githubusercontent.com/u/31113941?v=4" alt="B. Ng" width={28} height={28} unoptimized />
                                             </div>
                                         </div>
                                     </div>

@@ -35,7 +35,7 @@ export function Cta() {
       <div className="space-y-3 sm:space-y-4 z-10">
         <div className="text-center">
           <div className="inline-block text-xs sm:text-sm font-semibold text-[#93cf2f] px-3 sm:px-4 py-1 rounded-full border border-[#93cf2f]/50 bg-black/10">
-            "Start learning your way"
+            &ldquo;Start learning your way&rdquo;
           </div>
         </div>
         <h2 className="text-center font-bold text-lg sm:text-xl lg:text-2xl px-2">

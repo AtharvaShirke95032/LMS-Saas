@@ -69,8 +69,8 @@ export const FollowPointer = ({
   title,
   subject
 }: {
-  x: any;
-  y: any;
+  x: number;
+  y: number;
   title?: string | React.ReactNode;
   subject:string
 }) => {

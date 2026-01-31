@@ -15,7 +15,7 @@ import {
 } from "@/lib/actions/companion.actions";
 
 
-export let reverse: string[] = [];
+export const reverse: string[] = [];
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -84,7 +84,7 @@ const CompanionComponent = ({
       vapi.off("speech-start", onSpeechStart);
       vapi.off("speech-end", onSpeechEnd);
     };
-  }, []);
+  }, [companionId]);
 
   const toggleMicrophone = () => {
     const isMuted = vapi.isMuted();
@@ -118,9 +118,9 @@ const CompanionComponent = ({
         "Content-Type": "application/json",
       },
     });
-    const matches = await matchRes.json();
+    const matches = await matchRes.json() as Array<{ content: string }>;
     // console.log("Matches returned:", matches);
-    const memorySnippet = matches.map((m: any) => m.content).join("\n");
+    const memorySnippet = matches.map((m) => m.content).join("\n");
     // console.log(" Memory :", memorySnippet);
     const assistantOverrides = {
       variableValues: {
@@ -133,7 +133,7 @@ const CompanionComponent = ({
       clientMessages: ["transcript"],
       serverMessages: [],
     };
-    //@ts-expect-error
+    //@ts-expect-error - VAPI SDK types are incomplete, assistantOverrides is valid
     vapi.start(configureAssistant(voice, style), assistantOverrides);
   };
 

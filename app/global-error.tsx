@@ -2,7 +2,8 @@
 
 import NextError from "next/error";
 
-export default function GlobalError({ error: _error }: { error: Error & { digest?: string } }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
   return (
     <html>
       <body>
